@@ -5,7 +5,7 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void bluez zramen
           curl git rsync
           neovim nnn ripgrep scc
           htop lm_sensors
-          gcc pkg-config rustup rust-analyzer pnpm shellcheck
+          gcc pkg-config rustup rust-analyzer go pnpm shellcheck
 
           bash-completion xtools chrony python3-Twisted pngquant
           zip unzip lz4 zstd squashfs-tools
