@@ -1,4 +1,4 @@
-REPOS="void-repo-multilib void-repo-nonfree"
+REPOS="void-repo-multilib void-repo-nonfree void-repo-multilib-nonfree"
 
 PACKAGES="base-system grub-x86_64-efi seatd socklog-void bluez zramen
 
@@ -12,22 +12,23 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void bluez zramen
           fuse-sshfs jmtpfs
           nmap binwalk strace bind-utils libva-utils
 
-          mesa-dri vulkan-loader Vulkan-Tools glxinfo
+          light iwd intel-video-accel igt-gpu-tools mesa-vulkan-intel mesa-vulkan-intel-32bit intel-undervolt
+          nvidia nvidia-libs-32bit nvtop
+
+          mesa-dri vulkan-loader Vulkan-Tools mesa-demos glxinfo
           pipewire libspa-bluetooth pulsemixer pulseaudio-utils
           xdg-utils terminus-font
           sway wev i3status j4-dmenu-desktop
-          alacritty grimshot firefox torbrowser-launcher scrcpy zathura-pdf-mupdf libreoffice gimp gparted ghidra
+          alacritty grimshot mpv zathura-pdf-mupdf scrcpy
+          firefox torbrowser-launcher libreoffice gimp gparted ghidra
           steam libgcc-32bit libstdc++-32bit libdrm-32bit libglvnd-32bit mesa-dri-32bit
 
-          mpv youtube-dl instaloader spotify-tui
-          pfetch pipes.c
-
-          dbus-devel libxcb-devel openssl-devel ncurses-devel
-          light iwd intel-video-accel igt-gpu-tools mesa-vulkan-intel mesa-vulkan-intel-32bit intel-undervolt"
+          youtube-dl instaloader spotify-tui
+          pfetch pipes.c"
 
 SRC="discord spotify"
 
-CARGO="ncspot"
+CARGO="ncspot" PACKAGES="$PACKAGES dbus-devel libxcb-devel openssl-devel ncurses-devel"
 
 FIREFOX="ublock-origin universal-bypass proxy-toggle
          cliget vimium-ff simple-translate single-file

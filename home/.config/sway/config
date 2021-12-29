@@ -4,7 +4,7 @@ set $A  #d10028
 set $AB #232323
 set $IT #8b8b8b
 
-output * bg ~/Pictures/bg.png fill
+output * bg ~/Pictures/bg fill
 client.focused          $A      $AB     #ffffff #ffff00 $A
 client.focused_inactive #000000 #000000 $IT
 client.unfocused        #000000 #000000 $IT

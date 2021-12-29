@@ -54,7 +54,7 @@ sw() {
 
     mkdir -p   $XDG_RUNTIME_DIR
     chmod 0700 $XDG_RUNTIME_DIR
-    sway "$@"
+    sway --unsupported-gpu "$@"
     rm -rf /tmp/$UID-runtime-dir
 }
 tl() {
