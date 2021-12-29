@@ -1,8 +1,8 @@
 #!/bin/bash
+cd     "${0%/*}"
+source conf.bash
 set    -e
 shopt  -s        nullglob
-cd     "${0%/*}"
-source conf.sh
 
 if ! [[ $* =~ c ]]
 then
