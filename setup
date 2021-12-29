@@ -1,5 +1,6 @@
 #!/bin/bash
 set    -e
+shopt  -s        nullglob
 cd     "${0%/*}"
 source conf.sh
 
@@ -30,9 +31,15 @@ then
 
     for P in ~/.mozilla/firefox/*/
     do
-        ln -sf ~/.mozilla/firefox/user.js $P/user.js
+        ln -sf ~/.mozilla/firefox/user.js $P
     done
 fi
+
+for U in ~/.local/share/Steam/userdata/*
+do
+    mkdir -p $U/730/local/cfg
+    ln -sf ~/.local/share/Steam/steamapps/common/'Counter-Strike Global Offensive'/csgo/cfg/autoexec.cfg $U/730/local/cfg/
+done
 
      rsync -a home/ ~/
 sudo rsync -a root/  /
