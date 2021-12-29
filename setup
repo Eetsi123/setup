@@ -9,6 +9,7 @@ then
     sudo xbps-install -y $REPOS
     sudo xbps-install -Syu
     sudo xbps-install -y $PACKAGES
+    sudo gpasswd -a eetu _seatd
 
     git -C ~/src/void-packages pull || git clone https://github.com/void-linux/void-packages ~/src/void-packages
 fi
@@ -41,7 +42,7 @@ do
     ln -sf ~/.local/share/Steam/steamapps/common/'Counter-Strike Global Offensive'/csgo/cfg/autoexec.cfg $U/730/local/cfg/
 done
 
-     rsync -a home/ ~/
+     rsync -a home/ ~/ && source ~/.bash_profile
 sudo rsync -a root/  /
 
 for SV in $SERVICES
