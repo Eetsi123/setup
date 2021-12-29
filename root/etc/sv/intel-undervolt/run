@@ -1,0 +1,3 @@
+#!/bin/sh
+intel-undervolt apply >/dev/null
+exec pause

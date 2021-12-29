@@ -1,0 +1,2 @@
+export ZRAM_COMP_ALGORITHM=zstd
+export ZRAM_SIZE=25

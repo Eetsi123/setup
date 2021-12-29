@@ -1,0 +1,65 @@
+general {
+    output_format = i3bar
+    interval = 1
+}
+
+order += "ethernet enp0s25"
+ethernet enp0s25 {
+    format_up = "E: %ip (%speed)"
+    format_down = ""
+}
+
+order += "ethernet enp0s20u1"
+ethernet enp0s20u1 {
+    format_up = "A: %ip"
+    format_down = ""
+}
+
+order += "ethernet enp0s20u3"
+ethernet enp0s20u3 {
+    format_up = "A: %ip"
+    format_down = ""
+}
+
+order += "wireless wlp3s0"
+wireless wlp3s0 {
+    format_up = "W: %ip (%essid%quality)"
+    format_down = ""
+}
+
+order += "read_file bluetooth"
+read_file bluetooth {
+    path = "/dev/null"
+    format = "BT"
+}
+
+order += "volume master"
+volume master {
+    format = "VOL: %volume"
+    format_muted = "VOL: %volume"
+    device = "pulse"
+}
+
+order += "cpu_usage"
+cpu_usage {
+    format = "CPU: %usage"
+    degraded_threshold = 30
+}
+
+order += "memory"
+memory {
+    format = "MEM: %available"
+}
+
+order += "battery all"
+battery all {
+    format = "%status: %percentage %emptytime"
+    low_threshold = 30
+    last_full_capacity = true
+    integer_battery_capacity = true
+}
+
+order += "time"
+time {
+    format = "%Y-%m-%d %H:%M:%S"
+}

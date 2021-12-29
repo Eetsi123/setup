@@ -1,0 +1,145 @@
+font terminus
+
+set $A  #d10028
+set $AB #232323
+set $IT #8b8b8b
+
+output * bg ~/Pictures/bg.png fill
+client.focused          $A      $AB     #ffffff #ffff00 $A
+client.focused_inactive #000000 #000000 $IT
+client.unfocused        #000000 #000000 $IT
+default_border normal 1
+
+bar {
+	status_command ~/.config/i3status/wrapper
+    font terminus
+    colors {
+        focused_workspace  $A      $AB     #ffffff
+        inactive_workspace #000000 #000000 $IT
+    }
+}
+
+input * {
+    dwt disabled
+    xkb_layout "fi"
+}
+
+exec pipewire
+exec pipewire-pulse
+
+
+# Keybinds
+focus_wrapping false
+floating_modifier Mod4
+
+bindsym Mod4+Return  exec alacritty -o font.normal.family=terminus -o background_opacity=0.86
+bindsym Mod4+Shift+q kill
+bindsym Mod4+d       exec j4-dmenu-desktop --dmenu="dmenu -i -fn terminus -sb '$A' -nb '#000000'"
+
+bindsym           Mod4+c       nop
+bindsym --release Mod4+c       reload
+bindsym           Mod4+Shift+e exit
+
+bindsym Mod4+h     focus left
+bindsym Mod4+j     focus down
+bindsym Mod4+k     focus up
+bindsym Mod4+l     focus right
+bindsym Mod4+Left  focus left
+bindsym Mod4+Down  focus down
+bindsym Mod4+Up    focus up
+bindsym Mod4+Right focus right
+
+bindsym Mod4+Shift+h     move left
+bindsym Mod4+Shift+j     move down
+bindsym Mod4+Shift+k     move up
+bindsym Mod4+Shift+l     move right
+bindsym Mod4+Shift+Left  move left
+bindsym Mod4+Shift+Down  move down
+bindsym Mod4+Shift+Up    move up
+bindsym Mod4+Shift+Right move right
+
+bindsym Mod4+1 workspace 1
+bindsym Mod4+2 workspace 2
+bindsym Mod4+3 workspace 3
+bindsym Mod4+4 workspace 4
+bindsym Mod4+5 workspace 5
+bindsym Mod4+6 workspace 6
+bindsym Mod4+7 workspace 7
+bindsym Mod4+8 workspace 8
+bindsym Mod4+9 workspace 9
+bindsym Mod4+0 workspace 10
+
+bindsym Mod4+Shift+1 move container to workspace 1
+bindsym Mod4+Shift+2 move container to workspace 2
+bindsym Mod4+Shift+3 move container to workspace 3
+bindsym Mod4+Shift+4 move container to workspace 4
+bindsym Mod4+Shift+5 move container to workspace 5
+bindsym Mod4+Shift+6 move container to workspace 6
+bindsym Mod4+Shift+7 move container to workspace 7
+bindsym Mod4+Shift+8 move container to workspace 8
+bindsym Mod4+Shift+9 move container to workspace 9
+bindsym Mod4+Shift+0 move container to workspace 10
+
+bindsym Mod4+b splith
+bindsym Mod4+v splitv
+bindsym Mod4+s layout stacking
+bindsym Mod4+w layout tabbed
+bindsym Mod4+e layout toggle split
+
+bindsym Mod4+f           fullscreen
+bindsym Mod4+Shift+space floating toggle
+
+bindsym Mod4+space focus mode_toggle
+bindsym Mod4+a     focus parent
+
+bindsym Mod4+Shift+minus move scratchpad
+bindsym Mod4+minus       scratchpad show
+
+mode "resize" {
+    bindsym h resize shrink width  10px
+    bindsym j resize grow   height 10px
+    bindsym k resize shrink height 10px
+    bindsym l resize grow   width  10px
+
+    bindsym Left  resize shrink width  10px
+    bindsym Down  resize grow   height 10px
+    bindsym Up    resize shrink height 10px
+    bindsym Right resize grow   width  10px
+
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym Mod4+r mode "resize"
+
+exec light -N 0
+bindsym Mod4+Mod1+section exec light -S   0
+bindsym Mod4+Mod1+1       exec light -S   0.2
+bindsym Mod4+Mod1+2       exec light -S   6
+bindsym Mod4+Mod1+3       exec light -S  11
+bindsym Mod4+Mod1+4       exec light -S  21
+bindsym Mod4+Mod1+5       exec light -S  31
+bindsym Mod4+Mod1+6       exec light -S  37
+bindsym Mod4+Mod1+7       exec light -S  46
+bindsym Mod4+Mod1+8       exec light -S  61
+bindsym Mod4+Mod1+9       exec light -S  76
+bindsym Mod4+Mod1+0       exec light -S 100
+
+bindsym XF86AudioMute        exec pactl set-sink-mute   0 toggle
+bindsym XF86AudioLowerVolume exec pactl set-sink-volume 0 -1%
+bindsym XF86AudioRaiseVolume exec pactl set-sink-volume 0 +1%
+bindsym XF86AudioMicMute     exec pactl set-source-mute 0 toggle
+
+bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioNext exec playerctl next
+bindsym XF86AudioPrev exec playerctl previous
+bindsym XF86AudioStop exec playerctl stop
+
+bindsym --release Print exec grimshot copy area
+bindsym Mod4+Control+Shift+h move workspace to output left
+bindsym Mod4+Control+Shift+j move workspace to output down
+bindsym Mod4+Control+Shift+k move workspace to output up
+bindsym Mod4+Control+Shift+l move workspace to output right
+
+bindsym Mod4+Shift+s exec bash -ic sc
+
+for_window [class="scrcpy"] floating enable

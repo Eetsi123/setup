@@ -1,0 +1,27 @@
+#!/bin/bash
+
+BT_CON() {
+    D=0
+    bluetoothctl devices | while read -r LINE
+    do
+        I=$(cut -f2 -d' ' <<< "$LINE")
+        if bluetoothctl info $I | rg -Fq 'Connected: yes'
+        then
+            ((D += 1))
+            if [[ $D -eq 1 ]]
+            then
+                echo -n 'BT: '
+            else
+                echo -n ', '
+            fi
+            echo -n "${LINE#*$I }"
+        fi
+    done
+    echo
+}
+
+i3status | while read LINE
+do
+    sed "s/BT/$(BT_CON)/g" <<< "$LINE"
+    pgrep sway >/dev/null || exit # NOTE: sway <=1.6.1 doesn't kill the wrapper on exit or reload
+done

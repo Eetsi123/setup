@@ -1,0 +1,8 @@
+set selection-clipboard clipboard
+set font "terminus 10"
+set render-loading false
+
+set recolor true
+set recolor-lightcolor "#000000"
+set recolor-darkcolor "#dbdbe0"
+set recolor-keephue true

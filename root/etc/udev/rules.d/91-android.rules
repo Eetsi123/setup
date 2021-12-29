@@ -1,0 +1,6 @@
+# Nokia 8
+SUBSYSTEM=="usb", ATTR{idVendor}=="0489", ATTR{idProduct}=="c001", GROUP="wheel"
+# Nokia 8 MTP
+SUBSYSTEM=="usb", ATTR{idVendor}=="2e04", ATTR{idProduct}=="c026", GROUP="wheel"
+# Nokia 8 RNDIS
+SUBSYSTEM=="usb", ATTR{idVendor}=="2e04", ATTR{idProduct}=="c008", GROUP="wheel"
