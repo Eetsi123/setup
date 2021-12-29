@@ -1,0 +1,4 @@
+PermitRootLogin no
+AuthorizedKeysFile .ssh/authorized_keys
+PasswordAuthentication no
+PrintMotd no
