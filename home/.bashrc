@@ -24,7 +24,7 @@ alias rf="rg --files | rg"
 alias  s="ssh $S"
 alias  S="~/src/setup/setup"
 alias st="s -N -D8080 -L8008:localhost:8008"
-alias ur="umount /mnt/removable"
+alias ur="umount /mnt/removable 2>/dev/null || sudo umount /mnt/removable"
 alias us="umount /mnt/sshfs"
 alias  z="zathura --fork"
 
