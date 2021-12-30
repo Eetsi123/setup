@@ -8,7 +8,7 @@ STREAMS=$(nproc)
 
 modprobe zram
 DEV=$(zramctl --algorithm $ALGO --find --size $MEM --streams $STREAMS)
-mkswap $DEV
+mkswap $DEV >/dev/null
 swapon --discard --priority 32767 $DEV
 echo $DEV >/run/zram
 
