@@ -28,7 +28,7 @@ SRC="discord spotify"
 CARGO="ncspot" PACKAGES="$PACKAGES dbus-devel libxcb-devel openssl-devel ncurses-devel"
 PIP=
 
-FIREFOX="ublock-origin universal-bypass proxy-toggle
+FIREFOX="ublock-origin fastforwardteam proxy-toggle
          cliget vimium-ff simple-translate single-file
          new-tab-override matte-black-red"
 
