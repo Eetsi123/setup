@@ -9,7 +9,7 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void
 
           bash-completion xtools chrony python3-Twisted pngquant
           zip unzip lz4 zstd squashfs-tools
-          ntfs-3g fuse-sshfs jmtpfs
+          ntfs-3g fuse-sshfs jmtpfs parted smartmontools
           nmap binwalk strace bind-utils libva-utils
 
           mesa-dri vulkan-loader Vulkan-Tools mesa-demos glxinfo
