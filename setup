@@ -44,6 +44,7 @@ done
 
      rsync -a home/ ~/ && source ~/.bash_profile
 sudo rsync -a root/  /
+sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 for SV in $SERVICES
 do
