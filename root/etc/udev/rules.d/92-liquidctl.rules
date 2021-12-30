@@ -1,0 +1,4 @@
+# Kraken
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="1e71", ATTRS{idProduct}=="170e", GROUP="wheel"
+# Gigabyte
+SUBSYSTEMS=="usb", ATTRS{idVendor}=="048d", ATTRS{idProduct}=="8297", GROUP="wheel"
