@@ -1,6 +1,6 @@
 REPOS="void-repo-multilib void-repo-nonfree void-repo-multilib-nonfree"
 
-PACKAGES="base-system grub-x86_64-efi seatd socklog-void zramen
+PACKAGES="base-system grub-x86_64-efi seatd socklog-void
 
           curl git rsync
           neovim nnn ripgrep scc
@@ -9,7 +9,7 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void zramen
 
           bash-completion xtools chrony python3-Twisted pngquant
           zip unzip lz4 zstd squashfs-tools
-          fuse-sshfs jmtpfs
+          ntfs-3g fuse-sshfs jmtpfs
           nmap binwalk strace bind-utils libva-utils
 
           mesa-dri vulkan-loader Vulkan-Tools mesa-demos glxinfo
@@ -32,7 +32,7 @@ FIREFOX="ublock-origin universal-bypass proxy-toggle
          new-tab-override matte-black-red"
 
 
-SERVICES="acpid socklog-unix nanoklogd seatd zramen dbus"
+SERVICES="acpid socklog-unix nanoklogd zram seatd dbus"
 
 shopt -s expand_aliases
 alias M="lsmod | grep -q"

@@ -1,0 +1,15 @@
+#!/bin/bash
+set -e
+
+ALGO=zstd
+SIZE=25
+MEM=$(( $(rg -oPm1 '(?<=MemTotal:       )[0-9]*' /proc/meminfo) * $SIZE / 100 ))K
+STREAMS=$(nproc)
+
+modprobe zram
+DEV=$(zramctl --algorithm $ALGO --find --size $MEM --streams $STREAMS)
+mkswap $DEV
+swapon --discard --priority 32767 $DEV
+echo $DEV >/run/zram
+
+exec pause
