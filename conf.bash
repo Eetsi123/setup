@@ -4,12 +4,12 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void
 
           curl git rsync
           neovim nnn ripgrep scc
-          htop lm_sensors
+          htop iotop lm_sensors
           gcc pkg-config rustup rust-analyzer go pnpm python3-pip shellcheck
 
           bash-completion xtools chrony python3-Twisted pngquant
           zip unzip lz4 zstd squashfs-tools
-          ntfs-3g fuse-sshfs jmtpfs parted smartmontools
+          ntfs-3g fuse-sshfs jmtpfs parted smartmontools compsize
           nmap binwalk strace bind-utils libva-utils
 
           mesa-dri vulkan-loader Vulkan-Tools mesa-demos glxinfo
