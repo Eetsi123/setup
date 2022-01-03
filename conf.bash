@@ -33,7 +33,7 @@ FIREFOX="ublock-origin fastforwardteam proxy-toggle
          new-tab-override matte-black-red"
 
 
-SERVICES="acpid socklog-unix nanoklogd zram seatd dbus"
+SERVICES="acpid socklog-unix nanoklogd seatd dbus"
 
 shopt -s expand_aliases
 alias M="lsmod | grep -q"
