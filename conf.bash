@@ -4,7 +4,7 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void
 
           curl git rsync
           neovim nnn ripgrep scc
-          htop iotop lm_sensors
+          htop iotop lm_sensors dmidecode
           gcc pkg-config rustup rust-analyzer go pnpm python3-pip shellcheck
 
           bash-completion xtools chrony python3-Twisted pngquant
