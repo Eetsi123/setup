@@ -42,8 +42,8 @@ do
     ln -sf ~/.local/share/Steam/steamapps/common/'Counter-Strike Global Offensive'/csgo/cfg/autoexec.cfg $U/730/local/cfg/
 done
 
-     rsync -a home/ ~/ && source ~/.bash_profile
-sudo rsync -a root/  /
+     rsync -rp home/ ~/ && source ~/.bash_profile
+sudo rsync -rp root/  /
 sudo grub-mkconfig -o /boot/grub/grub.cfg
 
 for SV in $SERVICES
