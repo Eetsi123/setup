@@ -8,7 +8,7 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void
           gcc pkg-config rustup rust-analyzer go pnpm python3-pip shellcheck
 
           bash-completion xtools chrony python3-Twisted pwgen pngquant
-          zip unzip lz4 zstd squashfs-tools
+          zip unzip lz4 zstd p7zip squashfs-tools
           ntfs-3g fuse-sshfs jmtpfs parted smartmontools compsize
           nmap binwalk strace bind-utils libva-utils
 
