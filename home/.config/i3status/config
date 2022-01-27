@@ -15,6 +15,12 @@ ethernet enp0s20u1 {
     format_down = ""
 }
 
+order += "ethernet enp0s20u2"
+ethernet enp0s20u2 {
+    format_up = "A: %ip"
+    format_down = ""
+}
+
 order += "ethernet enp0s20u3"
 ethernet enp0s20u3 {
     format_up = "A: %ip"
