@@ -143,3 +143,5 @@ bindsym Mod4+Control+Shift+l move workspace to output right
 bindsym Mod4+Shift+s exec bash -ic sc
 
 for_window [class="scrcpy"] floating enable
+# Android Studio
+for_window [title="win0"]   floating enable

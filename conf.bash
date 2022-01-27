@@ -10,7 +10,7 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void
           bash-completion xtools chrony python3-Twisted pwgen pngquant
           zip unzip lz4 zstd p7zip squashfs-tools
           ntfs-3g fuse-sshfs jmtpfs parted smartmontools compsize
-          nmap binwalk strace bind-utils libva-utils
+          nmap binwalk python3-matplotlib strace bind-utils libva-utils
 
           mesa-dri vulkan-loader Vulkan-Tools mesa-demos glxinfo
           pipewire pulsemixer pulseaudio-utils
@@ -23,7 +23,7 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void
           youtube-dl instaloader spotify-tui
           pfetch pipes.c"
 
-SRC="discord spotify"
+SRC="discord spotify android-studio"
 
 CARGO="ncspot" PACKAGES="$PACKAGES dbus-devel libxcb-devel openssl-devel ncurses-devel"
 PIP=

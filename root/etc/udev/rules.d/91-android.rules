@@ -4,3 +4,7 @@ SUBSYSTEM=="usb", ATTR{idVendor}=="0489", ATTR{idProduct}=="c001", GROUP="wheel"
 SUBSYSTEM=="usb", ATTR{idVendor}=="2e04", ATTR{idProduct}=="c026", GROUP="wheel"
 # Nokia 8 RNDIS
 SUBSYSTEM=="usb", ATTR{idVendor}=="2e04", ATTR{idProduct}=="c008", GROUP="wheel"
+# Xperia Z3 Compact
+SUBSYSTEM=="usb", ATTR{idVendor}=="0fce", ATTR{idProduct}=="51bb", GROUP="wheel"
+# Xperia Z3 Compact Fastboot
+SUBSYSTEM=="usb", ATTR{idVendor}=="0fce", ATTR{idProduct}=="0dde", GROUP="wheel"

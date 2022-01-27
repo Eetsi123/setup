@@ -30,6 +30,7 @@ Plug 'hrsh7th/cmp-buffer'
 Plug 'simrat39/rust-tools.nvim'
 
 Plug 'digitaltoad/vim-pug'
+Plug 'udalov/kotlin-vim'
 call plug#end()
 
 set termguicolors
@@ -43,7 +44,9 @@ set signcolumn=yes
 set conceallevel=2
 
 lua <<EOFLUA
-require('lspconfig')
+require('lspconfig').kotlin_language_server.setup({
+    cmd = { "/home/eetu/src/kotlin-language-server/server/build/install/server/bin/kotlin-language-server" },
+})
 require('rust-tools').setup()
 require('cmp').setup({
     sources = {
