@@ -2,7 +2,7 @@ REPOS="void-repo-multilib void-repo-nonfree void-repo-multilib-nonfree"
 
 PACKAGES="base-system grub-x86_64-efi seatd socklog-void
 
-          curl git rsync
+          curl git rsync miniupnpc
           neovim nnn ripgrep scc
           htop iotop nethogs lm_sensors dmidecode
           gcc pkg-config rustup rust-analyzer go pnpm python3-pip shellcheck
