@@ -1,4 +1,12 @@
+export      EDITOR=nvim
+export HISTCONTROL=ignorespace
+export         PS1="\h \w $ "
+
+export S=eetu.duckdns.org
+
 export GOPATH=~/.go
+
+export MOZ_ENABLE_WAYLAND=1
 
 export _JAVA_AWT_WM_NONREPARENTING=1
 export _JAVA_OPTIONS="-Dawt.useSystemAAFontSettings=on -Dswing.aatext=true"

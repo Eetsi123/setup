@@ -1,8 +1,3 @@
-export             EDITOR=nvim
-export MOZ_ENABLE_WAYLAND=1
-export                PS1="\h \w $ "
-export                  S=eetsi123.duckdns.org
-
 alias  d="diff -u --color"
 alias  l="ls -lh --color=auto"
 alias la="l -a"
