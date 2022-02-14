@@ -81,6 +81,11 @@ then
     rustup-init -y --no-modify-path
     cargo install $CARGO
 
+    mkdir -p ~/.local/bin
+    curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz \
+        | gunzip >~/.local/bin/rust-analyzer
+    chmod +x ~/.local/bin/rust-analyzer
+
     [[ -n $PIP ]] && pip install -U $PIP
     
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
