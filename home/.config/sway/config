@@ -32,7 +32,7 @@ exec pipewire-pulse
 focus_wrapping false
 floating_modifier Mod4
 
-bindsym Mod4+Return  exec alacritty -o font.normal.family=terminus -o background_opacity=0.86
+bindsym Mod4+Return  exec alacritty -o font.normal.family=terminus -o window.opacity=0.86
 bindsym Mod4+Shift+q kill
 bindsym Mod4+d       exec j4-dmenu-desktop --dmenu="dmenu -i -fn terminus -sb '$A' -nb '#000000'"
 
