@@ -3,11 +3,11 @@ REPOS="void-repo-multilib void-repo-nonfree void-repo-multilib-nonfree"
 PACKAGES="base-system grub-x86_64-efi seatd socklog-void
 
           curl git rsync miniupnpc monero
-          neovim nnn ripgrep scc
+          neovim nnn tmux ripgrep scc
           htop iotop nethogs lm_sensors dmidecode
           gcc pkg-config rustup go pnpm python3-pip shellcheck
 
-          bash-completion xtools chrony python3-Twisted pwgen pngquant
+          bash-completion xtools chrony python3-Twisted pwgen ffmpeg pngquant
           zip unzip lz4 zstd p7zip squashfs-tools
           ntfs-3g fuse-sshfs jmtpfs parted smartmontools compsize
           nmap binwalk python3-matplotlib strace bind-utils libva-utils
