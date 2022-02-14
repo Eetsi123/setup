@@ -28,9 +28,9 @@ SRC="discord spotify android-studio"
 CARGO="ncspot" PACKAGES="$PACKAGES dbus-devel libxcb-devel openssl-devel ncurses-devel"
 PIP=
 
-FIREFOX="ublock-origin fastforwardteam proxy-toggle
-         cliget vimium-ff simple-translate single-file
-         new-tab-override matte-black-red"
+FIREFOX="ublock-origin i-dont-care-about-cookies clear-site-cookies
+         new-tab-override vimium-ff matte-black-red
+         cliget simple-translate fastforwardteam netflix-1080p-firefox proxy-toggle single-file"
 
 
 SERVICES="acpid socklog-unix nanoklogd seatd dbus"
