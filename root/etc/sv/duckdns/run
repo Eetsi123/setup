@@ -3,7 +3,6 @@ set -u
 
 while true
 do
-    IPV6="$(curl -s https://v6.ident.me)"
-    [ -n "$IPV6" ] && curl -s "https://www.duckdns.org/update?domains=$DOMAIN&token=$TOKEN&ipv6=$IPV6"
+    curl -s "https://www.duckdns.org/update?domains=$DOMAIN&token=$TOKEN" >/dev/null
     sleep 300
 done
