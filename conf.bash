@@ -43,9 +43,36 @@ A() { V=$1; shift; eval "$V=\"${!V} $*\"" ;}
 alias AP="A PACKAGES"
 alias AS="A SERVICES"
 
-M     iwlwifi                         && { AP iwd;                                                                               AS iwd             ;}
-M     btusb                           && { AP bluez libspa-bluetooth;                                                            AS bluetoothd      ;}
-M     i915                            && { AP light intel-media-driver igt-gpu-tools mesa-vulkan-intel{,-32bit} intel-undervolt; AS intel-undervolt ;}
-[[ -d /sys/class/power_supply/BAT0 ]] &&   AP upower
-M -E '(nouveau|nvidia)'               &&   AP nvidia nvidia-libs-32bit nvtop
-U     NZXT                            && { AP python3-{devel,setuptools,docopt,usb} libusb;                                      A PIP liquidctl    ;}
+if M iwlwifi
+then
+    AP iwd
+    AS iwd
+fi
+
+if M btusb
+then
+    AP bluez libspa-bluetooth
+    AS bluetoothd
+fi
+
+if M i915
+then
+    AP light intel-{media-driver,undervolt} igt-gpu-tools mesa-vulkan-intel{,-32bit}
+    AS intel-undervolt
+fi
+
+if [[ -d /sys/class/power_supply/BAT0 ]]
+then
+    AP upower
+fi
+
+if M -E '(nouveau|nvidia)'
+then
+    AP nvidia{,-libs-32bit} nvtop
+fi
+
+if U NZXT
+then
+    AP python3-{devel,setuptools,docopt,usb} libusb
+    A PIP liquidctl
+fi

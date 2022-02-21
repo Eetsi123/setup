@@ -11,7 +11,8 @@ then
     sudo xbps-install -y $PACKAGES
     sudo gpasswd -a eetu _seatd
 
-    git -C ~/src/void-packages pull || git clone https://github.com/void-linux/void-packages ~/src/void-packages
+    git -C ~/src/void-packages pull \
+        || git clone https://github.com/void-linux/void-packages ~/src/void-packages
 fi
 
 if [[ $* =~ f ]]
@@ -21,7 +22,8 @@ then
         AMO_FILES=$(
             for N in $FIREFOX
             do
-                curl -s https://addons.mozilla.org/api/v5/addons/addon/$N/ | jq -r .current_version.file.url &
+                curl -s https://addons.mozilla.org/api/v5/addons/addon/$N/ \
+                    | jq -r .current_version.file.url &
             done
             wait
         )
@@ -39,7 +41,9 @@ fi
 for U in ~/.local/share/Steam/userdata/*
 do
     mkdir -p $U/730/local/cfg
-    ln -sf ~/.local/share/Steam/steamapps/common/'Counter-Strike Global Offensive'/csgo/cfg/autoexec.cfg $U/730/local/cfg/
+    ln -sf \
+        ~/.local/share/Steam/steamapps/common/'Counter-Strike Global Offensive'/csgo/cfg/autoexec.cfg \
+        $U/730/local/cfg/
 done
 
      rsync -rp home/ ~/ && source ~/.bash_profile
@@ -82,9 +86,10 @@ then
     cargo install $CARGO
 
     mkdir -p ~/.local/bin
-    curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz \
-        | gunzip >~/.local/bin/rust-analyzer
-    chmod +x ~/.local/bin/rust-analyzer
+    RA=rust-analyzer # XXX: Avoid long lines.
+    curl -L https://github.com/$RA/$RA/releases/latest/download/$RA-x86_64-unknown-linux-gnu.gz \
+        | gunzip >~/.local/bin/$RA
+    chmod +x ~/.local/bin/$RA
 
     [[ -n $PIP ]] && pip install -U $PIP
     
