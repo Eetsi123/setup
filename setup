@@ -74,7 +74,8 @@ then
     ./xbps-src binary-bootstrap
     for P in $SRC
     do
-        ./xbps-src -E pkg $P
+        OPTIONS=${P//[^A-Za-z0-9]}_OPT
+        ./xbps-src -E -o "${!OPTIONS}" pkg $P
     done
     xi -yu $SRC
 

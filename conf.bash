@@ -43,6 +43,8 @@ A() { V=$1; shift; eval "$V=\"${!V} $*\"" ;}
 alias AP="A PACKAGES"
 alias AS="A SERVICES"
 
+O() { P=$1; shift; eval "${P//[^A-Za-z0-9]}_OPT=\"$*\"" ;}
+
 if M iwlwifi
 then
     AP iwd
@@ -63,7 +65,7 @@ fi
 
 if [[ -d /sys/class/power_supply/BAT0 ]]
 then
-    AP upower
+    AP upower powertop
 fi
 
 if M -E '(nouveau|nvidia)'
@@ -73,6 +75,6 @@ fi
 
 if U NZXT
 then
-    AP python3-{devel,setuptools,docopt,usb} libusb
+    AP    python3-{devel,setuptools,docopt,usb} libusb
     A PIP liquidctl
 fi
