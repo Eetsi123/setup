@@ -15,7 +15,7 @@ alias ma="jmtpfs -o allow_root      /mnt/removable/"
 alias ms="sshfs  -o allow_root $S:/ /mnt/sshfs"
 alias  p="cpipes -p40 -r0.6 -m300"
 alias pm="pulsemixer"
-alias  r="rsync -havP --append --timeout=30 --compress-choice=zstd --compress-level=22"
+alias  r="rsync -havP --append --timeout=30 --compress-choice=zstd --compress-level=15"
 alias rf="rg --files | rg"
 alias rp="pkill -x 'pipewire(-pulse)?' && b pipewire && sleep 0.1 && b pipewire-pulse"
 alias  s="ssh $S"
@@ -42,8 +42,8 @@ sc() {
     adb disconnect
     S=NB1GAD4782102091
     A=$(ip r s default | cut -d' ' -f3)
-    [[ $A = 192.168.66.1 ]] && ping -c1 -W0.6 192.168.66.8 >/dev/null && A=192.168.66.8
-    adb connect $A           | rg   -Fq 'connected to'                && S=$A
+    [[ $A = 192.168.100.1 ]] && ping -c1 -W0.6 192.168.100.12 >/dev/null && A=192.168.100.12
+    adb connect $A            | rg   -Fq 'connected to'                  && S=$A
     scrcpy -s $S -b4M -m1920 -Sw "$@"
 }
 sw() {
