@@ -23,5 +23,4 @@ BT_CON() {
 i3status | while read LINE
 do
     sed "s/BT/$(BT_CON)/g" <<< "$LINE"
-    pgrep sway >/dev/null || exit # NOTE: sway <=1.6.1 doesn't kill the wrapper on exit or reload
 done

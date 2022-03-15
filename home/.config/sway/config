@@ -1,4 +1,4 @@
-font terminus
+font terminus 10
 
 set $A  #d10028
 set $AB #232323
