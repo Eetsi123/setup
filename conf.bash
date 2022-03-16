@@ -7,7 +7,7 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void
           htop iotop nethogs lm_sensors dmidecode
           gcc pkg-config rustup go pnpm python3-pip shellcheck
 
-          bash-completion xtools chrony python3-Twisted pwgen ffmpeg pngquant
+          bash-completion xtools chrony pwgen ffmpeg pngquant
           zip unzip lz4 zstd p7zip squashfs-tools
           ntfs-3g fuse-sshfs jmtpfs parted smartmontools compsize
           nmap binwalk python3-matplotlib strace bind-utils libva-utils
@@ -25,7 +25,7 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void
 
 SRC="discord spotify android-studio"
 
-CARGO="ncspot" PACKAGES="$PACKAGES dbus-devel libxcb-devel openssl-devel ncurses-devel"
+CARGO="miniserve ncspot" PACKAGES="$PACKAGES dbus-devel libxcb-devel openssl-devel ncurses-devel"
 PIP=
 
 FIREFOX="ublock-origin i-dont-care-about-cookies clear-site-cookies

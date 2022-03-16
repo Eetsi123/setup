@@ -10,6 +10,7 @@ alias ar="adb shell 'svc wifi disable && svc usb setFunctions rndis'"
 alias bb="bp; bluetoothctl connect 60:3A:AF:56:51:B5"
 alias bo="bluetoothctl power off"
 alias bp="bluetoothctl power on"
+alias  h="miniserve -p 8888"
 alias  m="mpv --hwdec=auto-safe --demuxer-max-bytes=8GiB"
 alias ma="jmtpfs -o allow_root      /mnt/removable/"
 alias ms="sshfs  -o allow_root $S:/ /mnt/sshfs"
@@ -26,7 +27,6 @@ alias us="umount /mnt/sshfs"
 alias  z="zathura --fork"
 
 b()  { ("$@" &>/dev/null & disown)  ;}
-h()  { twistd -n web --path ${1:-.} ;}
 il() { instaloader -sGCl $1 --highlights --tagged --igtv $2 ;}
 mr() { sudo mount /dev/${1:-sdb1} /mnt/removable ;}
 
