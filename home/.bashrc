@@ -45,6 +45,30 @@ sc() {
     adb connect $A            | rg   -Fq 'connected to'                  && S=$A
     scrcpy -s $S -b4M -m1920 -Sw "$@"
 }
+sm() {
+    if [[ $# -eq 0 ]]
+    then
+        swaymsg -pt get_outputs | rg --color=never '(O|C|P|Av|    |^$)'
+        return
+    fi
+
+    local J=$(swaymsg -t get_outputs) O X=0
+    for O in $(jq -r .[].name <<< "$J")
+    do
+        if printf '%s\n' "$@" | rg -Fxq "$O"
+        then
+            swaymsg output "$O" enable
+        else
+            swaymsg output "$O" disable
+        fi
+    done
+    J=$(swaymsg -t get_outputs)
+    for O in "$@"
+    do
+        swaymsg output "$O" pos $X 0
+        (( X += $(jq ".[] | select(.name == \"$O\").rect.width" <<< "$J") ))
+    done
+}
 sw() {
     [[ -z $XDG_RUNTIME_DIR ]] && export XDG_RUNTIME_DIR=/tmp/$UID-runtime-dir
 
