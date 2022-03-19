@@ -40,8 +40,7 @@ n() {
 }
 sc() {
     adb disconnect
-    S=NB1GAD4782102091
-    A=$(ip r s default | cut -d' ' -f3)
+    local S=NB1GAD4782102091 A=$(ip r s default | cut -d' ' -f3)
     [[ $A = 192.168.100.1 ]] && ping -c1 -W0.6 192.168.100.12 >/dev/null && A=192.168.100.12
     adb connect $A            | rg   -Fq 'connected to'                  && S=$A
     scrcpy -s $S -b4M -m1920 -Sw "$@"
