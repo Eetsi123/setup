@@ -2,6 +2,10 @@ export      EDITOR=nvim
 export HISTCONTROL=ignorespace
 export         PS1="\h \w $ "
 
+export      XDG_RUNTIME_DIR=/tmp/$UID-runtime-dir
+mkdir -p   $XDG_RUNTIME_DIR
+chmod 0700 $XDG_RUNTIME_DIR
+
 export S=eetu.duckdns.org
 
 export GOPATH=~/.go

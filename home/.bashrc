@@ -69,14 +69,6 @@ sm() {
         (( X += $(jq ".[] | select(.name == \"$O\").rect.width" <<< "$J") ))
     done
 }
-sw() {
-    [[ -z $XDG_RUNTIME_DIR ]] && export XDG_RUNTIME_DIR=/tmp/$UID-runtime-dir
-
-    mkdir -p   $XDG_RUNTIME_DIR
-    chmod 0700 $XDG_RUNTIME_DIR
-    sway --unsupported-gpu "$@"
-    rm -rf /tmp/$UID-runtime-dir
-}
 tl() {
     if sed '2q;d' /etc/acpi/handler.sh | rg -q lid-disabled
     then
