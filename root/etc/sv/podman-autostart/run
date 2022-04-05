@@ -1,0 +1,9 @@
+#!/bin/sh
+ulimit -n 16384
+
+trap 'su eetu -c "exec podman stop --all"' TERM
+su eetu -c 'exec podman start --filter restart-policy=always --all >/dev/null'
+
+pause &
+wait
+kill $!
