@@ -79,6 +79,8 @@ then
     done
     xi -yu $SRC
 
+    sudo xbps-remove -Ooy
+
     tput setaf 9
     xbps-query -m | rg -vFf <(echo $REPOS $PACKAGES $SRC | tr ' ' '\n') || true
     tput setaf 7

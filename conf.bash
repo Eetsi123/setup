@@ -15,7 +15,7 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void
           mesa-dri vulkan-loader Vulkan-Tools mesa-demos glxinfo
           pipewire pulsemixer pulseaudio-utils
           xdg-utils terminus-font
-          sway wev i3status j4-dmenu-desktop
+          sway wev i3status j4-dmenu-desktop dmenu
           alacritty grimshot mpv zathura-pdf-mupdf scrcpy
           firefox torbrowser-launcher libreoffice gimp gparted ghidra
           steam libgcc-32bit libstdc++-32bit libdrm-32bit libglvnd-32bit mesa-dri-32bit
