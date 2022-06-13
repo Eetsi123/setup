@@ -25,7 +25,7 @@ PACKAGES="base-system grub-x86_64-efi seatd socklog-void
 
 SRC="discord spotify android-studio"
 
-CARGO="miniserve ncspot" PACKAGES="$PACKAGES dbus-devel libxcb-devel openssl-devel ncurses-devel"
+CARGO="miniserve"
 PIP=
 
 FIREFOX="ublock-origin i-dont-care-about-cookies clear-site-cookies
