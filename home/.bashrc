@@ -21,6 +21,7 @@ alias rf="rg --files | rg"
 alias rp="pkill -x 'pipewire(-pulse)?' && b pipewire && sleep 0.1 && b pipewire-pulse"
 alias  s="ssh $S"
 alias  S="~/src/setup/setup"
+alias sc="scrcpy -s \$(ac) -b4M -m1920 -Sw"
 alias st="s -N -D8080 -L8008:localhost:8008 -L8009:localhost:8009"
 alias ur="umount /mnt/removable 2>/dev/null || sudo umount /mnt/removable"
 alias us="umount /mnt/sshfs"
@@ -30,6 +31,17 @@ b()  { ("$@" &>/dev/null & disown)  ;}
 il() { instaloader -sGCl $1 --highlights --tagged --igtv $2 ;}
 mr() { sudo mount /dev/${1:-sdb1} /mnt/removable ;}
 
+ac() {
+    adb disconnect >/dev/null
+    local A=$(ip r s default | cut -d' ' -f3 | head -n1)
+    [[ $A = 192.168.100.1 ]] && ping -c1 -W0.6 192.168.100.12 >/dev/null && A=192.168.100.12
+    if [[ -n $A ]] && adb connect $A | rg -Fq 'connected to'
+    then
+        echo $A
+    else
+        echo NB1GAD4782102091
+    fi
+}
 n() {
     NNN_PLUG='x:tx;s:!sudoedit $nnn' nnn -due "$@"
     if [[ -f   ~/.config/nnn/.lastd ]]
@@ -37,13 +49,6 @@ n() {
         source ~/.config/nnn/.lastd
         rm     ~/.config/nnn/.lastd
     fi
-}
-sc() {
-    adb disconnect
-    local S=NB1GAD4782102091 A=$(ip r s default | cut -d' ' -f3 | head -n1)
-    [[ $A = 192.168.100.1 ]] && ping -c1 -W0.6 192.168.100.12 >/dev/null && A=192.168.100.12
-    adb connect $A            | rg   -Fq 'connected to'                  && S=$A
-    scrcpy -s $S -b4M -m1920 -Sw "$@"
 }
 sm() {
     if [[ $# -eq 0 ]]
