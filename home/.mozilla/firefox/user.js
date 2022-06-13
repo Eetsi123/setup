@@ -1,3 +1,4 @@
+user_pref("browser.uidensity",                            1)
 user_pref("layout.spellcheckDefault",                     0);
 user_pref("browser.startup.homepage",                     "https://eetu.netlify.app");
 
