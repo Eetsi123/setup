@@ -49,6 +49,7 @@ done
      rsync -rp home/ ~/ && source ~/.bash_profile
 sudo rsync -rp root/  /
 sudo grub-mkconfig -o /boot/grub/grub.cfg
+sudo xbps-reconfigure -f glibc-locales
 
 for SV in $SERVICES
 do
