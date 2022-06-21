@@ -4,88 +4,96 @@ source conf.bash
 set    -e
 shopt  -s        nullglob
 
-if ! [[ $* =~ c ]]
-then
+XBPS() {
     sudo xbps-install -y $REPOS
     sudo xbps-install -Syu
     sudo xbps-install -y $PACKAGES
-    sudo gpasswd -a eetu _seatd
+}
 
-    git -C ~/src/void-packages pull \
-        || git clone https://github.com/void-linux/void-packages ~/src/void-packages
-fi
+CONFIG() {
+         rsync -rp home/ ~/ && source ~/.bash_profile
+    sudo rsync -rp root/  /
 
-if [[ $* =~ f ]]
-then
-    if ! [[ $* =~ c ]]
-    then
-        AMO_FILES=$(
-            for N in $FIREFOX
-            do
-                curl -s https://addons.mozilla.org/api/v5/addons/addon/$N/ \
-                    | jq -r .current_version.file.url &
-            done
-            wait
-        )
-        firefox $AMO_FILES 'about:preferences#search'
-    fi
+    for SV in $SERVICES
+    do
+        sudo ln -sf /etc/sv/$SV /var/service/
+    done
 
-### CONFIG BEGIN ###
+    [[ -f ~/.ssh/id_rsa ]] || ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
 
     for P in ~/.mozilla/firefox/*/
     do
         ln -sf ~/.mozilla/firefox/user.js $P
     done
-fi
 
-for U in ~/.local/share/Steam/userdata/*
-do
-    mkdir -p $U/730/local/cfg
-    ln -sf \
-        ~/.local/share/Steam/steamapps/common/'Counter-Strike Global Offensive'/csgo/cfg/autoexec.cfg \
-        $U/730/local/cfg/
-done
+    for U in ~/.local/share/Steam/userdata/*
+    do
+        mkdir -p $U/730/local/cfg
+        ln -sf \
+            ~/.local/share/Steam/steamapps/common/'Counter-Strike Global Offensive'/csgo/cfg/autoexec.cfg \
+            $U/730/local/cfg/
+    done
+}
 
-     rsync -rp home/ ~/ && source ~/.bash_profile
-sudo rsync -rp root/  /
-sudo grub-mkconfig -o /boot/grub/grub.cfg
-sudo xbps-reconfigure -f glibc-locales
+FIREFOX() {
+    AMO_FILES=$(
+        for N in $FIREFOX
+        do
+            curl -s https://addons.mozilla.org/api/v5/addons/addon/$N/ \
+                | jq -r .current_version.file.url &
+        done
+        wait
+    )
+    firefox $AMO_FILES 'about:preferences#search'
+}
 
-for SV in $SERVICES
-do
-    sudo ln -sf /etc/sv/$SV /var/service/
-done
-
-[[ -f ~/.ssh/id_rsa ]] || ssh-keygen -t rsa -b 4096 -N '' -f ~/.ssh/id_rsa
-
-for D in /mnt/{removable,sshfs}
-do
-    if ! mountpoint -q          $D
-    then
-        sudo mkdir  -p          $D
-        sudo chown  $USER:$USER $D
-    fi
-done
-
-### CONFIG END ###
-
-if ! [[ $* =~ c ]]
-then
+XBPS_SRC() {
+    git -C ~/src/void-packages pull \
+        || git clone https://github.com/void-linux/void-packages ~/src/void-packages
     cd ~/src/void-packages
+
+    OUTDATED="$(xbps-checkvers -i -R ~/src/void-packages/hostdir/binpkgs/ -D ~/src/void-packages/ -f%n)"
+
     ./xbps-src binary-bootstrap
     for P in $SRC
     do
         OPTIONS=${P//[^A-Za-z0-9]}_OPT
-        ./xbps-src -E -o "${!OPTIONS}" pkg $P
-    done
-    xi -yu $SRC
+        INSTALLED=$(xbps-query -p build-options $P | rg -oP '(^| )\K[A-Za-z]+' || true)
 
+        REBUILD=false
+        [[ $OUTDATED =~ $P ]] && REBUILD=true
+
+        for O in $(./xbps-src -o "${!OPTIONS}" show-options $P | rg ON | rg -oP '   \K[A-Za-z]+')
+        do
+            [[ $INSTALLED =~ $O ]] || REBUILD=true
+        done
+
+        if $REBUILD
+        then
+            ./xbps-src -o "${!OPTIONS}" pkg $P
+            xi -yf $P
+        fi
+    done
+}
+
+XBPS_DONE() {
     sudo xbps-remove -Ooy
 
     tput setaf 9
     xbps-query -m | rg -vFf <(echo $REPOS $PACKAGES $SRC | tr ' ' '\n') || true
     tput setaf 7
-    
+
+    id -nG $USER | rg -wq _seatd || sudo gpasswd -a $USER _seatd
+}
+
+PYTHON() {
+    if [[ -n $PIP ]]
+    then
+        pip install -U $PIP
+    fi
+}
+
+RUST() {
     rustup-init -y --no-modify-path
     cargo install $CARGO
 
@@ -94,9 +102,36 @@ then
     curl -L https://github.com/$RA/$RA/releases/latest/download/$RA-x86_64-unknown-linux-gnu.gz \
         | gunzip >~/.local/bin/$RA
     chmod +x ~/.local/bin/$RA
+}
 
-    [[ -n $PIP ]] && pip install -U $PIP
-    
+NVIM() {
     curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
            https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-fi
+}
+
+DONE() {
+    for D in /mnt/{removable,sshfs}
+    do
+        if ! mountpoint -q          $D
+        then
+            sudo mkdir  -p          $D
+            sudo chown  $USER:$USER $D
+        fi
+    done
+
+    sudo grub-mkconfig -o /boot/grub/grub.cfg
+    sudo xbps-reconfigure -f glibc-locales
+}
+
+[[ $* =~ c ]] || XBPS
+CONFIG
+[[ $* =~ c ]] && exit
+[[ $* =~ f ]] && FIREFOX
+XBPS_SRC
+XBPS_DONE
+
+PYTHON
+RUST
+NVIM
+
+DONE
