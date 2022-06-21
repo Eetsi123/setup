@@ -29,3 +29,4 @@ user_pref("browser.discovery.enabled",                    false);
 user_pref("app.shield.optoutstudies.enabled",             false);
 user_pref("dom.security.https_only_mode",                 true);
 user_pref("privacy.donottrackheader.enabled",             true);
+user_pref("network.IDN_show_punycode",                    true)
