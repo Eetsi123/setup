@@ -15,6 +15,12 @@ wireless wlp3s0 {
     format_down = ""
 }
 
+order += "ethernet enp4s0"
+ethernet enp4s0 {
+    format_up = "E: %ip (%speed)"
+    format_down = ""
+}
+
 order += "ethernet enp0s25"
 ethernet enp0s25 {
     format_up = "E: %ip (%speed)"
