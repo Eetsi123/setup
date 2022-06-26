@@ -1,0 +1,9 @@
+{
+  "settingsVersion": "1.67.1",
+  "grabBackFocus": true,
+  "hideHud": true,
+  "keyMappings": "unmap /",
+  "newTabUrl": "https://eetu.netlify.app",
+  "searchUrl": "https://duckduckgo.com/?q=",
+  "smoothScroll": true
+}

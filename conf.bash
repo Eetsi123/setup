@@ -28,7 +28,7 @@ SRC="discord spotify android-studio"
 CARGO="miniserve"
 PIP=
 
-FIREFOX="ublock-origin i-dont-care-about-cookies clear-site-cookies
+FIREFOX="ublock-origin bypass-paywalls-clean i-dont-care-about-cookies clear-site-cookies
          new-tab-override vimium-ff matte-black-red
          cliget simple-translate fastforwardteam netflix-1080p-firefox proxy-toggle single-file"
 
