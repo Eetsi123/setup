@@ -1,20 +1,28 @@
 #!/bin/bash
 
+readarray -t D < <(bluetoothctl devices)
+for I in ${!D[@]}
+do
+    M[$I]=$(cut -f2  -d' ' <<< ${D[$I]})
+    N[$I]=$(cut -f3- -d' ' <<< ${D[$I]})
+done
+
 BT_CON() {
-    D=0
-    bluetoothctl devices | while read -r LINE
+    C=0
+
+    for I in ${!D[@]}
     do
-        I=$(cut -f2 -d' ' <<< "$LINE")
-        if bluetoothctl info $I | rg -Fq 'Connected: yes'
+        if [[ $(bluetoothctl info ${M[$I]}) =~ 'Connected: yes' ]]
         then
-            ((D += 1))
-            if [[ $D -eq 1 ]]
+            if [[ $C -eq 0 ]]
             then
                 echo -n 'BT: '
             else
                 echo -n ', '
             fi
-            echo -n "${LINE#*$I }"
+            echo -n "${N[$I]}"
+
+            (( C += 1))
         fi
     done
     echo

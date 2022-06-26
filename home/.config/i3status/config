@@ -3,6 +3,18 @@ general {
     interval = 1
 }
 
+order += "read_file bluetooth"
+read_file bluetooth {
+    path = "/dev/null"
+    format = "BT"
+}
+
+order += "wireless wlp3s0"
+wireless wlp3s0 {
+    format_up = "W: %ip (%essid%quality)"
+    format_down = ""
+}
+
 order += "ethernet enp0s25"
 ethernet enp0s25 {
     format_up = "E: %ip (%speed)"
@@ -25,18 +37,6 @@ order += "ethernet enp0s20u3"
 ethernet enp0s20u3 {
     format_up = "A: %ip"
     format_down = ""
-}
-
-order += "wireless wlp3s0"
-wireless wlp3s0 {
-    format_up = "W: %ip (%essid%quality)"
-    format_down = ""
-}
-
-order += "read_file bluetooth"
-read_file bluetooth {
-    path = "/dev/null"
-    format = "BT"
 }
 
 order += "volume master"
