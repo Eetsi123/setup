@@ -111,6 +111,8 @@ mode "resize" {
 }
 bindsym Mod4+r mode "resize"
 
+bindsym Mod4+ISO_Level3_Shift exec sudo zzz
+
 exec light -N 0
 bindsym Mod4+Mod1+section exec light -S   0
 bindsym Mod4+Mod1+1       exec light -S   0.2
