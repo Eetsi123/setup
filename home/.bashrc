@@ -43,7 +43,7 @@ ac() {
     fi
 }
 n() {
-    NNN_PLUG='x:tx;s:!sudoedit $nnn' nnn -due "$@"
+    NNN_PLUG='s:!sudoedit $nnn' nnn -due "$@"
     if [[ -f   ~/.config/nnn/.lastd ]]
     then
         source ~/.config/nnn/.lastd
