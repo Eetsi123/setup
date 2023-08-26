@@ -1,0 +1,10 @@
+#!/bin/bash
+REMOTE="$1"
+shift
+
+[[ ${REMOTE%:} = r ]] && REMOTE=$s:/
+[[ ${REMOTE%:} = h ]] && REMOTE=$s:$HOME
+[[ ${REMOTE%:} = o ]] && REMOTE=$s:$HOME/Documents/opinnot/
+[[ ${REMOTE%:} = m ]] && REMOTE=$s:/mnt
+
+mountpoint -q "$1" || sshfs "$REMOTE" "$@"

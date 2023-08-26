@@ -1,0 +1,9 @@
+[org/gnome/settings-daemon/plugins/power]
+power-button-action='interactive'
+sleep-inactive-ac-type='nothing'
+sleep-inactive-battery-timeout=900
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/suspend]
+binding='<Super>ISO_Level3_Shift'
+command='systemctl suspend'
+name='Suspend'

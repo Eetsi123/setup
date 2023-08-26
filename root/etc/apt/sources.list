@@ -1,0 +1,11 @@
+deb     https://www.nic.funet.fi/debian bookworm main non-free-firmware non-free contrib
+deb-src https://www.nic.funet.fi/debian bookworm main non-free-firmware non-free contrib
+
+deb     https://security.debian.org/debian-security bookworm-security main non-free-firmware non-free contrib
+deb-src https://security.debian.org/debian-security bookworm-security main non-free-firmware non-free contrib
+
+deb     https://www.nic.funet.fi/debian bookworm-updates main non-free-firmware non-free contrib
+deb-src https://www.nic.funet.fi/debian bookworm-updates main non-free-firmware non-free contrib
+
+deb     https://www.nic.funet.fi/debian bookworm-backports main non-free-firmware non-free contrib
+deb-src https://www.nic.funet.fi/debian bookworm-backports main non-free-firmware non-free contrib

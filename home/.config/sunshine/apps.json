@@ -1,0 +1,54 @@
+{
+    "env": "",
+    "apps": [
+        {
+            "name": "Desktop",
+            "image-path": "desktop.png"
+        },
+        {
+            "name": "Cemu",
+            "output": "",
+            "cmd": "flatpak run info.cemu.Cemu",
+            "exclude-global-prep-cmd": "false",
+            "elevated": "false",
+            "auto-detach": "true",
+            "image-path": "",
+            "prep-cmd": [
+                {
+                    "do": "\/home\/eetu\/src\/monitors.sh remote",
+                    "undo": "\/home\/eetu\/src\/monitors.sh default"
+                }
+            ]
+        },
+        {
+            "name": "PCSX2",
+            "output": "",
+            "cmd": "flatpak run net.pcsx2.PCSX2",
+            "exclude-global-prep-cmd": "false",
+            "elevated": "false",
+            "auto-detach": "true",
+            "image-path": "",
+            "prep-cmd": [
+                {
+                    "do": "\/home\/eetu\/src\/monitors.sh remote",
+                    "undo": "\/home\/eetu\/src\/monitors.sh default"
+                }
+            ]
+        },
+        {
+            "name": "RPCS3",
+            "output": "",
+            "cmd": "flatpak run net.rpcs3.RPCS3",
+            "exclude-global-prep-cmd": "false",
+            "elevated": "false",
+            "auto-detach": "true",
+            "image-path": "",
+            "prep-cmd": [
+                {
+                    "do": "\/home\/eetu\/src\/monitors.sh remote",
+                    "undo": "\/home\/eetu\/src\/monitors.sh default"
+                }
+            ]
+        }
+    ]
+}
