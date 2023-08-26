@@ -1,0 +1,76 @@
+#!/bin/bash
+set    -e
+cd     "${0%/*}"
+source conf.bash
+
+### NOTE: config ###
+for G in $GROUP
+do
+    sudo gpasswd -a $USER $G
+done
+
+hash rsync || sudo apt install --yes rsync
+     rsync -rlpt home/ ~/
+sudo rsync -rlpt root/  /
+source ~/.bash_profile
+
+sudo udevadm control --reload-rules
+sudo udevadm trigger
+
+hash dconf && cat conf.dconf | dconf load / || true
+[[ -f ~/.config/monitors.xml ]] && sudo cp ~/.config/monitors.xml /var/lib/gdm3/.config/
+
+[[ $1 = "c" ]] && exit
+
+
+### NOTE: install ###
+sudo dpkg --add-architecture i386
+sudo apt install    --yes ca-certificates
+sudo apt update
+sudo apt install    --yes $APT
+sudo apt install    --yes $APT_BACKPORTS -t bookworm-backports
+sudo apt remove     --yes $APT_BLOCK
+sudo apt-mark hold        $APT_BLOCK
+sudo apt autoremove --yes
+
+aria2c --continue --force-sequential --dir ~/.cache/setup --auto-file-renaming=false --allow-overwrite $DEB
+sudo apt install --yes $(sed "s|[^ ]*/|$HOME/.cache/setup/|g" <<< $DEB)
+
+sudo flatpak   install --system --assumeyes $FLATPAK
+sudo flatpak uninstall --system --assumeyes --unused
+
+curl -sSf https://sh.rustup.rs | sh -s -- -y --no-modify-path
+cargo install $CARGO
+rustup component add rust-analyzer
+
+for P in $PIPX
+do
+    pipx install $P
+    I=PIPX_${P//-/_} I=${I^^} I=${!I}
+    [[ -n $I ]] && pipx inject $P $I
+done
+
+go install $GO
+
+aria2c --continue --force-sequential --dir ~/.local/share/fonts --auto-file-renaming=false --allow-overwrite $FONT
+
+sudo locale-gen --keep-existing
+
+for E in $GNOME_EXTENSION
+do
+    if ! [[ -d ~/.local/share/gnome-shell/extensions/$E ]]
+    then
+        xdg-open "gnome-extensions://$(jq -Rr @uri <<< $E)?action=install"
+    fi
+done
+
+
+### NOTE: update ###
+sudo apt full-upgrade --yes
+sudo flatpak update --system --assumeyes
+pipx upgrade-all
+
+for S in $SERVICE_RESTART
+do
+    sudo systemctl restart $S
+done

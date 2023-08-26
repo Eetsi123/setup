@@ -1,0 +1,40 @@
+#!/bin/bash
+START() {
+    tmux set -a terminal-features RGB                            \
+        && tmux split-window -eP=1 -eNNN_FIFO=$NNN_FIFO -dh "$@" \
+        && exit
+
+    P=1 alacritty -e "$@"
+}
+
+PREVIEW() {
+    case $(file --brief --mime-type "$1") in
+        image/jpeg|image/png) catimg -H0 "$1";;
+        image/*|video/*) mpv --vo=tct --ao=null --really-quiet --keep-open --no-resume-playback "$1";;
+    esac &
+}
+
+STATUS=$NNN_FIFO.preview
+
+if [[ -z $P ]]
+then
+    if [[ -f $STATUS ]] && kill $(cat $STATUS) 2>/dev/null
+    then
+        rm $STATUS
+    else
+        ( START $0 "$@" 2>/dev/null ) & disown
+    fi
+
+    exit
+fi
+
+
+echo $$ > $STATUS
+
+PREVIEW "$2/$1"
+while read -r SELECTION
+do
+    [[ -n $! ]] && pkill -P $! 2>/dev/null
+    clear
+    PREVIEW "$SELECTION"
+done < $NNN_FIFO
