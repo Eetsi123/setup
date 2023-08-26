@@ -1,0 +1,30 @@
+{
+    "env": "",
+    "apps": [
+        {
+            "name": "Desktop",
+            "image-path": "desktop.png",
+            "exclude-global-prep-cmd": true
+        },
+        {
+            "name": "Steam",
+            "cmd": "steam steam://open/gamepadui"
+        },
+        {
+            "name": "Lutris",
+            "cmd": "lutris"
+        },
+        {
+            "name": "Cemu",
+            "cmd": "flatpak run info.cemu.Cemu"
+        },
+        {
+            "name": "PCSX2",
+            "cmd": "flatpak run net.pcsx2.PCSX2"
+        },
+        {
+            "name": "RPCS3",
+            "cmd": "flatpak run net.rpcs3.RPCS3"
+        }
+    ]
+}

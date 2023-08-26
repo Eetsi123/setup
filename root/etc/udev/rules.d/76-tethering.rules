@@ -1,0 +1,1 @@
+SUBSYSTEM=="net", SUBSYSTEMS=="usb", ATTRS{idVendor}=="04e8", ATTRS{idProduct}=="6864", NAME="usb%n"

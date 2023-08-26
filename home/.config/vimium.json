@@ -1,0 +1,30 @@
+{
+    "settingsVersion": "2.0.5",
+    "grabBackFocus": true,
+    "hideHud": true,
+    "keyMappings": "unmap /\n\nunmap o\nunmap O\nunmap b\nunmap B\nunmap T\nunmap ge\nunmap gE",
+    "newTabUrl": "https://eetu.netlify.app",
+    "searchUrl": "https://duckduckgo.com/?q=",
+    "exclusionRules": [
+        {
+            "passKeys": "",
+            "pattern": "https?://ha.eetu.duckdns.org.*"
+        },
+        {
+            "passKeys": "",
+            "pattern": "https?://.*:9090.*"
+        },
+        {
+            "passKeys": "",
+            "pattern": "https?://app.sketchup.com.*"
+        },
+        {
+            "passKeys": "",
+            "pattern": "https?://ovid-visiblebody-com.ezproxy.uef.fi:2443.*"
+        },
+        {
+            "passKeys": "",
+            "pattern": "https?://www.falstad.com.*"
+        }
+    ]
+}

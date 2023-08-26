@@ -1,0 +1,7 @@
+set selection-clipboard clipboard
+set vertical-center true
+set guioptions none
+
+set first-page-column 1
+map , set "first-page-column 1"
+map . set "first-page-column 2"
