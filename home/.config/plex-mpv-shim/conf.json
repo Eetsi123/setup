@@ -1,0 +1,10 @@
+{
+    "auto_transcode":     false,
+    "enable_gui":       false,
+    "kb_menu_left":       "unbound",
+    "kb_menu_right":      "unbound",
+    "kb_unwatched":       "unbound",
+    "kb_watched":         "unbound",
+    "mpv_log_level":      "warn",
+    "shader_pack_enable": false
+}
