@@ -73,6 +73,7 @@ GO="github.com/go-acme/lego/v4/cmd/lego@v4.18.0"
 PIPX="yt-dlp
       ocrmypdf
 
+      plex-mpv-shim
       esptool"
 PIPX_YT_DLP="secretstorage"
 
