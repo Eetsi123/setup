@@ -64,6 +64,7 @@ GO="github.com/pgaskin/kepubify@latest"
 PIPX="yt-dlp
       ocrmypdf
 
+      plex-mpv-shim
       esptool"
 PIPX_YT_DLP="secretstorage"
 
