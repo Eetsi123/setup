@@ -1,0 +1,210 @@
+css = """
+.card {
+    font-family: Menlo, baskerville, sans;
+    font-size:  19px;
+    text-align: center;
+    color: #D7DEE9;
+    background-color: #333B45;
+}
+
+div { display: inline; }
+p   { margin: 0;       }
+img {
+    height:  85vh;
+    object-fit: contain;
+}
+ul {
+    margin:     0;
+    padding:    0 0 0 0.2rem;
+    list-style: inside;
+}
+
+.t { margin-bottom: 0.5em; }
+.c {
+    position: relative;
+}
+.c > .l {
+    position: absolute;
+    width: fit-content;
+    left: 100%;
+    top: 50%;
+    transform: translateX(1em) translateY(-50%);
+}
+.l {
+    align-self: center;
+    text-align: left;
+    padding-left: 1em;
+}
+
+.t { color: #00ccff;                           }
+.n { color: HotPink;        font-weight: bold; }
+.l { color: MediumSeaGreen; font-size: 14px;   }
+"""
+
+js = """
+var mask = document.querySelector('#io-mask>img');
+var loaded = () => document.querySelector('#io-image').style.visibility = 'visible';
+if (mask === null || mask.complete) {
+    loaded();
+} else {
+    mask.addEventListener('load', loaded);
+}
+"""
+
+[[models]]
+name = "Anatomia (numeroitu)"
+fields = [
+    "Otsikko",
+    "Kuva",
+    "Lisätieto",
+    "Nimi 1",
+    "Nimi 2",
+    "Nimi 3",
+    "Nimi 4",
+    "Nimi 5",
+    "Nimi 6",
+    "Nimi 7",
+    "Nimi 8",
+    "Nimi 9",
+    "Nimi 10",
+    "Nimi 11",
+    "Nimi 12",
+    "Nimi 13",
+    "Nimi 14",
+    "Nimi 15",
+    "Nimi 16",
+]
+
+[[models.templates]]
+name = "Kysymys $NUM$"
+front = """
+{{#Nimi $NUM$}}
+    <p class=t>{{Otsikko}}</p>
+
+    Mikä on kohdassa <span class=n>$NUM$</span>?
+    <br>
+    {{Kuva}}
+{{/Nimi $NUM$}}
+"""
+back = """
+<p class=t>{{Otsikko}}</p>
+
+<div class=c>
+    <span class=n>$NUM$: {{Nimi $NUM$}}</span>
+    <br>
+    {{Kuva}}
+    <span class=$NUM$>{{Lisätieto}}</span>
+</div>
+"""
+patterns = [
+    {"$NUM$" =  "1"},
+    {"$NUM$" =  "2"},
+    {"$NUM$" =  "3"},
+    {"$NUM$" =  "4"},
+    {"$NUM$" =  "5"},
+    {"$NUM$" =  "6"},
+    {"$NUM$" =  "7"},
+    {"$NUM$" =  "8"},
+    {"$NUM$" =  "9"},
+    {"$NUM$" = "10"},
+    {"$NUM$" = "11"},
+    {"$NUM$" = "12"},
+    {"$NUM$" = "13"},
+    {"$NUM$" = "14"},
+    {"$NUM$" = "15"},
+    {"$NUM$" = "16"},
+]
+
+[[models]]
+name = "Anatomia (yksittäinen)"
+css = """
+.origo, .insertio, .hermotus, .funktio {
+    display: inline-block;
+    text-align: left;
+}
+
+.origo    { color: #FF3131;    }
+.insertio { color: Chartreuse; }
+.hermotus { color: #DF00FE;    }
+.funktio  { color: #007FFF;    }
+
+#io-wrapper {
+    display: inline-block;
+    position: relative;
+}
+#io-image {
+    visibility: hidden;
+}
+#io-mask {
+    display: block;
+    position: absolute;
+    top: 0;
+}
+"""
+fields = [
+    "Otsikko",
+    "Kuva",
+    "Lisätieto",
+    "Nimi",
+    "Origo",
+    "Insertio",
+    "Hermotus",
+    "Funktio",
+    "Kysymysmaski",
+    "Nimimaski",
+]
+
+[[models.templates]]
+name = "Nimi"
+front = """
+<p class=t>{{Otsikko}}</p>
+
+Mikä on tämän kohdan <span class=n>nimi</span>?
+<br>
+<div id=io-wrapper>
+    <div id=io-image>{{Kuva}}</div>
+    <div id=io-mask>{{Kysymysmaski}}</div>
+</div>
+"""
+back = """
+<p class=t>{{Otsikko}}</p>
+
+<div class=c>
+    <span class=n>{{Nimi}}</span>
+    <br>
+    <div id=io-wrapper>
+        <div id=io-image>{{Kuva}}</div>
+        <div id=io-mask>{{Nimimaski}}</div>
+    </div>
+    <span class=l>{{Lisätieto}}</span>
+</div>
+"""
+
+[[models.templates]]
+name = "$CAP$"
+front = """
+{{#$CAP$}}
+    Mikä on <span class=n>{{Nimi}}</span> -lihaksen <span class=$LOW$>$LOW$</span>?
+{{/$CAP$}}
+"""
+back = """
+<p class=t>{{Otsikko}}</p>
+
+<div class=c>
+    <span class=n>{{Nimi}}</span> -lihaksen $LOW$:
+    <br>
+    <span class=$LOW$>{{$CAP$}}</span>
+    <br>
+    <div id=io-wrapper>
+        <div id=io-image>{{Kuva}}</div>
+        <div id=io-mask>{{Nimimaski}}</div>
+    </div>
+    <span class=l>{{Lisätieto}}</span>
+</div>
+"""
+patterns = [
+    {"$CAP$" = "Origo",    "$LOW$" = "origo"   },
+    {"$CAP$" = "Insertio", "$LOW$" = "insertio"},
+    {"$CAP$" = "Hermotus", "$LOW$" = "hermotus"},
+    {"$CAP$" = "Funktio",  "$LOW$" = "funktio" },
+]

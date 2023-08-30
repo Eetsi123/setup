@@ -1,0 +1,16 @@
+{
+    "rules": [
+        {
+            "deck":  "06-liikkuminen",
+            "note":  "Anatomia (yksittäinen)",
+            "first": ["Nimi"],
+            "then":  ["Origo", "Insertio", "Hermotus"]
+        },
+        {
+            "deck":  "06-liikkuminen",
+            "note":  "Anatomia (yksittäinen)",
+            "first": ["Origo", "Insertio"],
+            "then":  ["Funktio"]
+        }
+    ]
+}
