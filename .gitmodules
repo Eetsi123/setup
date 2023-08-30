@@ -1,0 +1,3 @@
+[submodule "anki-templated_notes-tomli"]
+path = home/.var/app/net.ankiweb.Anki/data/Anki2/addons21/templated_notes/tomli
+url = https://github.com/hukkin/tomli
