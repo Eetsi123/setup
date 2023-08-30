@@ -9,6 +9,9 @@ do
     sudo gpasswd -a $USER $G
 done
 
+hash git || sudo apt install --yes git
+git submodule update --init --recursive
+
 hash rsync || sudo apt install --yes rsync
      rsync -rlpt home/ ~/
 sudo rsync -rlpt root/  /
