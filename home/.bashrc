@@ -51,6 +51,19 @@ n() {
         rm     ~/.config/nnn/.lastd
     fi
 }
+m() {
+    ip route show default | column -tH4,6,7,8
+
+    echo
+    local IFS=$'\n'
+    select C in $(nmcli -t -f DEVICE,NAME connection show --active | rg -v "^lo:")
+    do
+        read -p "metric: " M
+        sudo nmcli connection modify "${C#*:}" ipv4.route-metric "$M"
+        sudo nmcli connection up     "${C#*:}"
+        break
+    done
+}
 
 
 #### completions ####
