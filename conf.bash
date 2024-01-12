@@ -36,6 +36,7 @@ DEB="https://zoom.us/client/6.1.0.198/zoom_amd64.deb
      https://download1.rstudio.org/electron/jammy/amd64/rstudio-2024.04.2-764-amd64.deb
      https://github.com/LizardByte/Sunshine/releases/download/v0.23.1/sunshine-debian-bookworm-amd64.deb
      https://github.com/webosbrew/dev-manager-desktop/releases/download/v1.13.3/web-os-dev-manager_1.13.3_amd64.deb
+     https://github.com/fastfetch-cli/fastfetch/releases/download/2.16.0/fastfetch-linux-amd64.deb
 
      https://github.com/winterheart/broadcom-bt-firmware/releases/download/v12.0.1.1105_p4/broadcom-bt-firmware-12.0.1.1105.deb"
 
