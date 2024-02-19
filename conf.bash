@@ -37,6 +37,7 @@ DEB="https://zoom.us/client/5.17.5.2543/zoom_amd64.deb
      https://github.com/LizardByte/Sunshine/releases/download/v0.21.0/sunshine-debian-bookworm-amd64.deb
      https://github.com/webosbrew/dev-manager-desktop/releases/download/v1.12.1/web-os-dev-manager_1.12.1_amd64.deb
      https://github.com/fastfetch-cli/fastfetch/releases/download/2.7.1/fastfetch-2.7.1-Linux.deb
+     https://github.com/supabase/cli/releases/download/v1.142.0/supabase_1.142.0_linux_amd64.deb
 
      https://github.com/winterheart/broadcom-bt-firmware/releases/download/v12.0.1.1105_p4/broadcom-bt-firmware-12.0.1.1105.deb"
 
