@@ -43,6 +43,7 @@ DEB="https://zoom.us/client/5.17.5.2543/zoom_amd64.deb
 
 FLATPAK="com.github.tchx84.Flatseal
          net.ankiweb.Anki
+         org.gnome.Loupe
          net.werwolv.ImHex
 
          org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
