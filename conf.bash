@@ -44,6 +44,7 @@ FLATPAK="com.github.tchx84.Flatseal
          org.gnome.dspy
 
          net.ankiweb.Anki
+         org.gnome.Loupe
          net.werwolv.ImHex
          io.github.nroduit.Weasis
 
