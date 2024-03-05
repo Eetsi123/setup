@@ -50,6 +50,7 @@ FLATPAK="com.github.tchx84.Flatseal
 
          org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
          com.moonlight_stream.Moonlight
+         net.kuribo64.melonDS
          info.cemu.Cemu
          net.pcsx2.PCSX2
          net.rpcs3.RPCS3"
