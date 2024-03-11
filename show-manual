@@ -1,0 +1,27 @@
+#!/bin/bash
+cd     "${0%/*}"
+source conf.bash
+
+IGNORE() {
+    rg -vFf <(printf "%s\n" "$@")
+}
+
+
+echo "APT:"
+MANUAL=$(apt-mark showmanual)
+printf "%s\n" $MANUAL | IGNORE $APT $APT_BACKPORTS \
+    $(apt-cache depends --installed --important --recurse                                $MANUAL | rg -oP "^\s+(.+: )\K.*$") \
+    $(apt-cache depends --installed --important --option APT::Cache::ShowRecommends=True $MANUAL | rg -oP "^\s+(.+: )\K.*$") \
+    $(                  dpkg-query --show --showformat='${Priority} ${Package}\n'                | rg -oP "(required|important|standard) \K.+$") \
+    $(for D in $DEB; do dpkg-deb   --show --showformat='${Package}\n' ~/.cache/setup/${D##*/}; done)
+
+echo -e "\nFLATPAK:"
+flatpak list --app --columns=application | IGNORE $FLATPAK
+
+
+echo -e "\nCARGO:"
+cargo install --list | rg -oP "^[^ ]+" | IGNORE $CARGO
+
+
+echo -e "\nPIPX:"
+pipx list --short | IGNORE $PIPX | cut -f1 -d' '
