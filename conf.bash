@@ -16,7 +16,7 @@ APT="task-english task-finnish firmware-linux sudo
      zip unrar libarchive-tools
      mediainfo exiftool exiftran tesseract-ocr-fin jq binwalk
 
-     gnome-session gnome-tweaks
+     gnome-session gnome-tweaks xdg-desktop-portal-gnome
      chromium zathura mpv mangohud spotify-client
      libreoffice libreoffice-gnome onlyoffice-desktopeditors
      nsxiv darktable gimp inkscape
