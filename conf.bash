@@ -15,7 +15,7 @@ APT="task-english task-finnish firmware-linux sudo
      telnet ssh aria2 nmap knot-dnsutils lego
      zip unrar mediainfo exiftool jq binwalk
 
-     gnome-session gnome-tweaks
+     gnome-session gnome-tweaks xdg-desktop-portal-gnome
      chromium zathura mpv lutris mangohud spotify-client
      libreoffice libreoffice-gnome onlyoffice-desktopeditors
      nsxiv darktable gimp inkscape
