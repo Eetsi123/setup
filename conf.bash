@@ -20,7 +20,7 @@ APT="task-english task-finnish firmware-linux sudo
      chromium zathura mpv mangohud spotify-client
      libreoffice libreoffice-gnome onlyoffice-desktopeditors
      nsxiv darktable gimp inkscape
-     alacritty gparted easyeffects
+     alacritty code gparted easyeffects
      x11-apps x11-utils wev vulkan-tools
 
      chromium-l10n libreoffice-l10n-fi libreoffice-voikko"
@@ -86,6 +86,10 @@ GNOME_EXTENSION="lan-ip-address@mrhuber.com
                  tiling-assistant@leleat-on-github
                  bluetooth-quick-connect@bjarosze.gmail.com
                  batime@martin.zurowietz.de"
+VSCODE_EXTENSION="vscodevim.vim
+                  ms-python.debugpy
+                  rust-lang.rust-analyzer
+                  svelte.svelte-vscode"
 
 if lscpu | grep -q GenuineIntel
 then
