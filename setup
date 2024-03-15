@@ -67,11 +67,15 @@ do
     fi
 done
 
+code --force $(printf -- "--install-extension=%s\n" $VSCODE_EXTENSION)
+
 
 ### NOTE: update ###
 sudo apt full-upgrade --yes
 sudo flatpak update --system --assumeyes
 pipx upgrade-all
+
+code --update-extensions
 
 for S in $SERVICE_RESTART
 do
