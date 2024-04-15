@@ -66,10 +66,12 @@ GO="github.com/pgaskin/kepubify@latest"
 
 PIPX="yt-dlp
       ocrmypdf
+      whisper-ctranslate2
 
       plex-mpv-shim
       esptool"
 PIPX_YT_DLP="secretstorage"
+PIPX_WHISPER_CTRANSLATE2="nvidia-cudnn-cu12==8.9.7.29"
 
 FONT="https://github.com/dmlls/whatsapp-emoji-linux/releases/download/2.23.2.72-1/WhatsAppEmoji.ttf"
 GNOME_EXTENSION="lan-ip-address@mrhuber.com

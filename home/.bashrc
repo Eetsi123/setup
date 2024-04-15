@@ -64,6 +64,17 @@ m() {
         break
     done
 }
+w() {
+    LD_LIBRARY_PATH=~/.local/pipx/venvs/whisper-ctranslate2/lib/python3.11/site-packages/nvidia/cudnn/lib \
+        whisper-ctranslate2 --model=large-v2 --vad_filter=True --word_timestamps=True --print_colors=True \
+                            --max_line_width=42 --max_line_count=2 "$@"
+    
+    local ARG
+    for ARG in "$@"
+    do
+        [[ -f $ARG ]] && rm ${ARG%.*}.{vtt,tsv,json}
+    done
+}
 
 
 #### completions ####
@@ -73,6 +84,7 @@ then
     return 0
 fi
 complete -F _longopt l la
+complete -r w
 
 # lazy loading completion wrapper
 # $1 -> command
