@@ -73,10 +73,12 @@ GO="github.com/go-acme/lego/v4/cmd/lego@v4.18.0"
 
 PIPX="yt-dlp
       ocrmypdf
+      whisper-ctranslate2
 
       plex-mpv-shim
       esptool"
 PIPX_YT_DLP="secretstorage"
+PIPX_WHISPER_CTRANSLATE2="nvidia-cudnn-cu12==8.9.7.29"
 
 BIN="https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip
      https://github.com/pgaskin/kepubify/releases/download/v4.0.4/kepubify-linux-64bit"
