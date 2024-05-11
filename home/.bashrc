@@ -25,7 +25,7 @@ alias r="rsync -havP --append --mkpath --timeout=30"
 alias s="ssh $s"
 alias t="s -N -D8080 -L8008:localhost:8008"
 alias z="zathura --fork"
-alias y="yt-dlp --add-metadata --embed-subs --write-auto-subs --sub-lang=en,fi --retries=30 --retry-sleep=10"
+alias y="yt-dlp --add-metadata --embed-subs --sub-lang=en,fi --retries=30 --retry-sleep=10"
 
 alias bw="sudo efibootmgr -qn \$(efibootmgr | rg -oP '^Boot0*\K[0-9A-F]+(?=\*? Windows)') && sudo reboot"
 alias ga="git add"
