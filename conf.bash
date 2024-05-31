@@ -73,6 +73,7 @@ GO="github.com/go-acme/lego/v4/cmd/lego@v4.18.0"
 
 PIPX="yt-dlp
       ocrmypdf
+      pgsrip
       whisper-ctranslate2
 
       plex-mpv-shim
