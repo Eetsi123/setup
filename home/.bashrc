@@ -42,6 +42,17 @@ alias wn="play -n synth brownnoise synth pinknoise mix synth sine amod 0.05 70"
 #### functions ####
 b() { ("$@" &>/dev/null & disown)  ;}
 
+fh() {
+    ffmpeg -hwaccel cuda -i "$1" -map 0                                                               \
+        -c:v h264_nvenc -vf format=yuv420p,hwupload_cuda,scale_cuda=-1:1080 -preset p7 -rc vbr -cq 18 \
+        -c:a copy -c:s copy "$2"
+}
+fl() {
+    ffmpeg -hwaccel cuda -i "$1" -map 0                                                              \
+        -c:v hevc_nvenc -vf format=yuv420p,hwupload_cuda,scale_cuda=-1:720 -preset p7 -rc vbr -cq 35 \
+        -c:a libopus -b:a 80k -ac 2                                                                  \
+        -c:s copy "$2"
+}
 n() {
     NNN_PLUG="p:-preview;n:-!nsxiv -apt . &*;m:-md5sum" \
         NNN_SSHFS="$HOME/.config/nnn/sshfs" nnn -ade "$@"
