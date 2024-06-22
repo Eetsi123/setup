@@ -2,7 +2,8 @@ GROUP="input kvm"
 
 APT="task-english task-finnish firmware-linux sudo
      gcc python-is-python3 r-base
-     meson cmake autoconf libtool pkg-config r-cran-haven r-cran-rcpp
+     meson cmake autoconf libtool pkg-config
+     r-cran-haven r-cran-rcpp r-cran-tidyverse r-cran-patchwork
      flatpak podman containers-storage pipx npm wine wine32
 
      htop iotop sysstat smartmontools nethogs powertop usbutils vainfo
