@@ -1,7 +1,7 @@
 GROUP="input kvm"
 
 APT="task-english task-finnish firmware-linux sudo
-     gcc python-is-python3 golang r-base
+     gcc python-is-python3 r-base
      meson cmake autoconf libtool pkg-config
      r-cran-haven r-cran-rcpp r-cran-tidyverse
      flatpak podman containers-storage pipx npm wine wine32
@@ -23,7 +23,8 @@ APT="task-english task-finnish firmware-linux sudo
      alacritty code gparted easyeffects
      x11-apps x11-utils wev vulkan-tools"
 APT_BACKPORTS="linux-image-amd64 linux-headers-amd64
-               zfs-dkms cockpit cockpit-podman cockpit-machines"
+               zfs-dkms cockpit cockpit-podman cockpit-machines
+               golang"
 APT_BLOCK="udisks2 avahi-daemon ifupdown
            nvidia-kernel-dkms"
 
