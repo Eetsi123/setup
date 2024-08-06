@@ -92,7 +92,7 @@ w() {
     local ARG
     for ARG in "$@"
     do
-        [[ -f $ARG ]] && rm ${ARG%.*}.{vtt,tsv,json}
+        [[ -f $ARG ]] && rm "${ARG%.*}".{vtt,tsv,json}
     done
 }
 
