@@ -52,7 +52,9 @@ FLATPAK="com.github.tchx84.Flatseal
 
          net.ankiweb.Anki
          org.gnome.Loupe
+
          net.werwolv.ImHex
+         com.makemkv.MakeMKV
          io.github.nroduit.Weasis
 
          org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/23.08
