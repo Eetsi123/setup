@@ -17,7 +17,7 @@ APT="task-english task-finnish firmware-linux sudo
      zip unrar libarchive-tools
      mediainfo exiftool exiftran tesseract-ocr-fin jq binwalk
 
-     gnome-session gnome-tweaks xdg-desktop-portal-gnome
+     gnome-session gnome-tweaks xdg-desktop-portal-gnome gnome-network-displays
      chromium zathura foliate mpv mangohud spotify-client
      libreoffice libreoffice-gnome onlyoffice-desktopeditors
      nsxiv darktable gimp inkscape
@@ -106,7 +106,7 @@ fi
 
 if lsmod | grep -q i915
 then
-    APT="$APT intel-media-va-driver-non-free intel-gpu-tools"
+    APT="$APT intel-media-va-driver-non-free intel-gpu-tools gstreamer1.0-vaapi"
 fi
 
 if lsmod | grep -qE "(nouveau|nvidia)"
