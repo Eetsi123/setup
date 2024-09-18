@@ -11,7 +11,7 @@ APT="task-english task-finnish firmware-linux sudo
      fdisk gdisk gddrescue
      chrony wireguard sshfs
 
-     bash-completion ripgrep tmux nnn catimg neovim git rsync
+     bash-completion ripgrep tmux nnn fzf catimg neovim git rsync
      apt-file debsums pwgen sox shellcheck
      telnet ssh aria2 nmap knot-dnsutils
      zip unrar libarchive-tools
@@ -85,7 +85,8 @@ PIPX_YT_DLP="secretstorage"
 PIPX_WHISPER_CTRANSLATE2="nvidia-cudnn-cu12==8.9.7.29"
 
 BIN="https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip
-     https://github.com/pgaskin/kepubify/releases/download/v4.0.4/kepubify-linux-64bit"
+     https://github.com/pgaskin/kepubify/releases/download/v4.0.4/kepubify-linux-64bit
+     https://github.com/phiresky/ripgrep-all/releases/download/v0.10.6/ripgrep_all-v0.10.6-x86_64-unknown-linux-musl.tar.gz"
 
 FONT="https://github.com/dmlls/whatsapp-emoji-linux/releases/download/2.24.8.85-1/WhatsAppEmoji.ttf"
 GNOME_EXTENSION="lan-ip-address@mrhuber.com
