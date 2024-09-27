@@ -15,7 +15,7 @@ APT="task-english task-finnish firmware-linux sudo
      apt-file debsums pwgen sox shellcheck
      telnet ssh aria2 nmap knot-dnsutils
      zip unrar libarchive-tools
-     mediainfo exiftool exiftran tesseract-ocr-fin jq binwalk
+     mediainfo qpdf exiftool exiftran tesseract-ocr-fin jq binwalk
 
      gnome-session gnome-tweaks xdg-desktop-portal-gnome gnome-network-displays
      chromium zathura foliate mpv mangohud spotify-client
