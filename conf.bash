@@ -91,6 +91,7 @@ BIN="https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip
 FONT="https://github.com/dmlls/whatsapp-emoji-linux/releases/download/2.24.8.85-1/WhatsAppEmoji.ttf"
 GNOME_EXTENSION="lan-ip-address@mrhuber.com
                  tiling-assistant@leleat-on-github
+                 caffeine@patapon.info
                  bluetooth-quick-connect@bjarosze.gmail.com
                  batime@martin.zurowietz.de"
 VSCODE_EXTENSION="vscodevim.vim

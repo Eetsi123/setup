@@ -51,3 +51,8 @@ name='Toggle MangoHud'
 window-gap=0
 single-screen-gap=0
 dynamic-keybinding-behavior=2
+
+[org/gnome/shell/extensions/caffeine]
+inhibit-apps=['mpv.desktop', 'Zoom.desktop']
+trigger-apps-mode='on-focus'
+show-notifications=false
