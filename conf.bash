@@ -36,6 +36,7 @@ SERVICE_RESTART="NetworkManager"
 DEB="https://zoom.us/client/6.1.11.1545/zoom_amd64.deb
      http://code-industry.net/public/master-pdf-editor-4.3.89_qt5.amd64.deb
      https://github.com/notion-enhancer/notion-repackaged/releases/download/v2.0.18-1/notion-app_2.0.18-1_amd64.deb
+     https://mega.nz/linux/repo/Debian_12/amd64/megacmd-Debian_12_amd64.deb
 
      https://download1.rstudio.org/electron/jammy/amd64/rstudio-2024.04.2-764-amd64.deb
      https://github.com/webosbrew/dev-manager-desktop/releases/download/v1.13.3/web-os-dev-manager_1.13.3_amd64.deb
