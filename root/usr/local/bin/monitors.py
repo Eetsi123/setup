@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+# TODO: check if layout already matches
 import sys, dbus
 from collections import defaultdict
 bus = dbus.SessionBus()
