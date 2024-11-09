@@ -1,0 +1,20 @@
+[org/gnome/desktop/wm/keybindings]
+close=['<Shift><Super>q']
+
+[org/gnome/settings-daemon/plugins/media-keys]
+custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/mangohud/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/suspend/']
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal]
+binding='<Super>Return'
+command='ptyxis --new-window'
+name='Open terminal'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/mangohud]
+binding='<Control>section'
+command='mangohud-toggle'
+name='Toggle MangoHud'
+
+[org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/suspend]
+binding='<Super>ISO_Level3_Shift'
+command='systemctl suspend'
+name='Suspend'

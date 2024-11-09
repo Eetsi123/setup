@@ -1,0 +1,20 @@
+[org/gnome/shell]
+favorite-apps=['org.chromium.Chromium.desktop', 'com.spotify.Client.desktop', 'org.gnome.TextEditor.desktop', 'org.gnome.Nautilus.desktop']
+
+[org/gnome/desktop/app-folders]
+folder-children=['Administration', 'Games', 'Office']
+
+[org/gnome/desktop/app-folders/folders/Administration]
+apps=['org.gnome.dspy.desktop', 'org.gnome.baobab.desktop', 'org.gnome.DiskUtility.desktop', 'org.gnome.Extensions.desktop', 'com.github.tchx84.Flatseal.desktop', 'org.gnome.seahorse.Application.desktop', 'org.gnome.SystemMonitor.desktop']
+name='SystemConfig.directory'
+translate=true
+
+[org/gnome/desktop/app-folders/folders/Games]
+categories=['Game']
+name='Game.directory'
+translate=true
+
+[org/gnome/desktop/app-folders/folders/Office]
+categories=['Office']
+name='Office.directory'
+translate=true

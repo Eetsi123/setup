@@ -1,0 +1,14 @@
+#!/usr/bin/bash
+mkdir -p ~/.config/MangoHud
+cd       ~/.config/MangoHud
+
+if ! [[ -f MangoHud.conf ]]
+then
+    cp /etc/MangoHud.conf .
+fi
+
+HIDDEN=$(rg -oP "no_display=\K[01]" MangoHud.conf)
+sed -i \
+    -e "s/pci_dev=.*/pci_dev=$GPU/" \
+    -e "s/no_display=.*/no_display=$((! $HIDDEN))/" \
+    MangoHud.conf

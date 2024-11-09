@@ -1,0 +1,9 @@
+#!/bin/bash
+if [[ -f ~/.config/nnn/.selection ]]
+then
+    readarray -d '' FILES < ~/.config/nnn/.selection
+else
+    FILES=( "$1" )
+fi
+
+md5sum "${FILES[@]}"

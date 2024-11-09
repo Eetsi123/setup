@@ -1,0 +1,4 @@
+[org/gnome/shell]
+disable-user-extensions=false
+enabled-extensions=['background-logo@fedorahosted.org', 'tiling-assistant@leleat-on-github', 'date-menu-formatter@marcinjakubowski.github.com', 'lan-ip-address@mrhuber.com', 'battery-time@eetumos.github.com']
+disabled-extensions=['apps-menu@gnome-shell-extensions.gcampax.github.com', 'launch-new-instance@gnome-shell-extensions.gcampax.github.com', 'places-menu@gnome-shell-extensions.gcampax.github.com', 'window-list@gnome-shell-extensions.gcampax.github.com']

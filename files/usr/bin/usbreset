@@ -1,0 +1,18 @@
+#!/usr/bin/bash
+[[ $UID -eq 0 ]] || exec sudo $0 "$@"
+
+reset() {
+    d=$(lsusb -tvv | rg -Uom1 "$1.*\n\s*(/sys[^ ]*)" -r '$1')
+    [[ -z $d ]] && return
+
+    p=$(readlink -f $d/port)
+    echo 1 >$p/disable
+    echo 0 >$p/disable
+}
+
+for ID in "$@"
+do
+    reset $ID &
+done
+
+wait

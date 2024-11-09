@@ -1,0 +1,11 @@
+[Unit]
+Description=Install and configure predefined applications
+After=network-online.target
+
+[Service]
+Type=oneshot
+TimeoutStartSec=1800
+ExecStart=/usr/bin/flatpak-setup
+
+[Install]
+WantedBy=multi-user.target

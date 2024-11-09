@@ -1,0 +1,84 @@
+#!/usr/bin/bash
+[[ $UID -eq 0 ]] || exec sudo $0
+
+
+# NOTE: configuration
+HUD=(com.valvesoftware.Steam
+
+     info.cemu.Cemu
+     org.ryujinx.Ryujinx
+
+     net.pcsx2.PCSX2
+     net.rpcs3.RPCS3)
+
+APP=(org.gnome.baobab               
+     org.gnome.Calculator
+     org.gnome.Characters
+     org.gnome.clocks
+     org.gnome.Evince
+     org.gnome.Extensions
+     org.gnome.font-viewer
+     org.gnome.Loupe
+     org.gnome.NautilusPreviewer
+     org.gnome.TextEditor
+     org.gnome.Weather
+
+     org.chromium.Chromium
+     io.mpv.Mpv
+
+     org.libreoffice.LibreOffice
+     org.gimp.GIMP
+     net.ankiweb.Anki
+
+     com.github.tchx84.Flatseal
+     org.gnome.seahorse.Application
+     org.gnome.dspy
+     org.remmina.Remmina
+
+     com.spotify.Client
+     com.discordapp.Discord
+
+     "${HUD[@]}")
+
+org.chromium.Chromium() {
+    mkdir -p                /var/lib/flatpak/extension/org.chromium.Chromium.Extension.setup/x86_64
+    ln    -sf /etc/chromium /var/lib/flatpak/extension/org.chromium.Chromium.Extension.setup/x86_64/1
+}
+
+io.mpv.Mpv() {
+    rm -rf                  /var/lib/flatpak/app/io.mpv.Mpv/current/active/files/etc/mpv
+    ln -s /run/host/etc/mpv /var/lib/flatpak/app/io.mpv.Mpv/current/active/files/etc/mpv
+}
+
+
+# NOTE: installation
+flatpak remotes --columns=name               | rg fedora           | xargs -r flatpak remote-modify --disable
+flatpak list    --columns=application,origin | rg fedora | cut -f1 | xargs -r flatpak uninstall     --noninteractive
+
+flatpak remote-add --if-not-exists flathub   https://dl.flathub.org/repo/flathub.flatpakrepo
+flatpak config     --set           languages "en;fi"
+
+flatpak install --noninteractive "${APP[@]}" runtime/org.freedesktop.Platform.VulkanLayer.MangoHud/x86_64/2{1..4}.08
+flatpak update  --noninteractive
+
+for A in "${HUD[@]}"
+do
+    flatpak override --filesystem=xdg-config/MangoHud:ro --env=MANGOHUD=1 $A
+done
+
+for A in "${APP[@]}"
+do
+    declare -F $A >/dev/null && $A
+done
+
+for H in /home/*
+do
+    cd $H
+    U=${H##*/}
+
+    [[ -f .config/MangoHud/MangoHud.conf ]] && continue
+
+    mkdir -p              .config/MangoHud
+    cp /etc/MangoHud.conf .config/MangoHud/
+    chown -R $U:$U        .config/MangoHud/
+done
