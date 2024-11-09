@@ -1,0 +1,70 @@
+#!/usr/bin/bash
+set -e
+u=${u:-/opt/umu}
+
+### NOTE: configure system ###
+[[ -d $u ]] || sudo mkdir -p          "$u"
+[[ -w $u ]] || sudo chown $USER:$USER "$u"
+
+if ! [[ -L /usr/local/share/applications/umu ]]
+then
+    sudo mkdir -p                    /usr/local/share/applications
+    sudo ln    -s "$u"/.applications /usr/local/share/applications/umu
+fi
+
+[[ $# -eq 0 ]] && exit
+
+
+### NOTE: configure install-prefix ###
+export GAMEID=0 WINEPREFIX="$u"/.install-prefix
+
+mkdir -p   "$u/$1" "$WINEPREFIX"/dosdevices
+ln    -sfT "$u/$1" "$WINEPREFIX"/dosdevices/d:
+
+[[ $# -eq 2 ]] && umu-run "$2"
+
+
+### NOTE: create desktop entry ###
+sel() {
+    readarray -t O < $1
+
+    if [[ ${#O[@]} -eq 1 ]]
+    then
+        echo "$O"
+    else
+        select o in "${O[@]}"
+        do
+            echo "$o"
+            break
+        done
+    fi
+}
+mkdir -p "$u"/.applications
+
+if ! [[ -L $u/$1/exe ]]
+then
+    LNK=$(sel <(find $WINEPREFIX/drive_c/users/{Public,steamuser}/Desktop -type f))
+    EXE=$(sel <(strings "$LNK" | rg -o "D:.*exe"))
+
+    if [[ -n $EXE ]]
+    then
+        EXE=$(umu-run winepath -u "$EXE")
+    else
+        read -p "exe: " EXE
+    fi
+
+    ln -sr "$EXE" "$u/$1"/exe
+fi
+
+N=$(wrestool --type=icon "$u/$1/exe" | rg -oPr '$1 $2' -- "--name=([0-9]+).*size=([0-9]+)" | sort -k2nr | head -n1 | cut -d' ' -f1)
+    wrestool --type=icon "$u/$1/exe" --name=$N -xR >"$u/$1/icon"
+
+cat <<EOF >"$u/.applications/$1".desktop
+[Desktop Entry]
+Type=Application
+Name=$1
+Categories=Game
+Exec=env GAMEID=. MANGOHUD=1 gnome-session-inhibit umu-run "$u/$1/exe"
+Icon=$u/$1/icon
+EOF
+# TODO: system.reg -> winebus -> "DisableHidraw"=dword:00000001
