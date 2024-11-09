@@ -1,0 +1,3 @@
+[org/gnome/shell/extensions/tiling-assistant]
+single-screen-gap=0
+window-gap=0
