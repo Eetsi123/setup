@@ -1,0 +1,4 @@
+[org/gnome/shell/extensions/date-menu-formatter]
+font-size=11
+pattern='dd.MM.  HH:mm'
+formatter='02_original'
