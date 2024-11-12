@@ -18,6 +18,9 @@ Highlights
 - mpv
 - wrapper for umu-launcher
 
+### Patches
+- multiseat (gnome-shell)
+
 
 Issues
 ------

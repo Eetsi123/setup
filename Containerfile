@@ -47,6 +47,11 @@ RUN --mount=type=cache,dst=/var/cache/libdnf5 --mount=type=bind,src=fixes/dnf.co
     echo NoDisplay=true | tee -a /usr/share/applications/{nvim,htop}.desktop >/dev/null
 RUN dnf install -y https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-1.2.6.fc41.rpm
 
+RUN --mount=type=bind,src=patches/rpm,dst=patches,z \
+    ./patches/patch-n-build                      && \
+    dnf reinstall -y *.rpm                       && \
+    rm               *.rpm
+
 RUN curl -sL https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip | bsdtar xC /usr/bin --strip-components=1 && \
     chmod 755 /usr/bin/bun
 

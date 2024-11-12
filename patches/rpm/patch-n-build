@@ -1,0 +1,29 @@
+#!/usr/bin/bash
+set -e
+PATCHES=$(realpath ${0%/*})
+
+for D in $PATCHES/*/
+do
+    NAME=${D%/}
+    NAME=${NAME##*/}
+
+    mkdir rpmbuild
+    cd    rpmbuild
+    
+    dnf download --srpm $NAME
+    rpm -D "_topdir $PWD" -i $NAME-*.src.rpm
+
+    B=$(rg -nr= "^%build$" SPECS/$NAME.spec | sed 's/://')
+    for PATCH in $PATCHES/$NAME/*
+    do
+        sed -i "$B i git apply $PATCH" SPECS/$NAME.spec
+    done
+
+    rpmspec -P SPECS/$NAME.spec | rg -oP "BuildRequires:\s*\K[^ ]*" | xargs dnf install -y
+    rpmbuild -D "_topdir $PWD" -D "debug_package %nil" -bb SPECS/$NAME.spec
+    dnf history undo last -y
+    
+    mv RPMS/x86_64/$NAME-[0-9]*.rpm ..
+    cd ..
+    rm -r rpmbuild
+done
