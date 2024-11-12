@@ -28,6 +28,17 @@ RUN dnf install -y https://github.com/winterheart/broadcom-bt-firmware/releases/
 
 
 ### NOTE: userland ###
+RUN --mount=type=bind,src=patches/gnome-shell/2230-multiseat.patch,dst=ms,relabel=shared   \
+    mkdir rpmbuild && cd rpmbuild                                                       && \
+    dnf download --srpm gnome-shell                                                     && \
+    rpm -D "_topdir $PWD" -i gnome-shell-*.src.rpm && rpm -qa --qf "%{name}\n" >before  && \
+    grep -oP "BuildRequires: +\K[^ ]+" SPECS/gnome-shell.spec | xargs dnf install -y    && \
+    sed -i "s/%autorelease/100\nPatch: ms/" SPECS/gnome-shell.spec && cp ../ms SOURCES/ && \
+    rpmbuild -D "_topdir $PWD" -bb SPECS/gnome-shell.spec                               && \
+    rpm -qa --qf "%{name}\n" | grep -vFxf before | xargs dnf remove -y                  && \
+    dnf install -y RPMS/x86_64/gnome-shell-4*.x86_64.rpm                                && \
+    cd .. && rm -r rpmbuild
+
 RUN dnf remove  -y ffmpeg-free libav{codec,format,filter,device,util}-free libsw{scale,resample}-free libpostproc-free && \
     dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-41.noarch.rpm          \
                    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-41.noarch.rpm && \
