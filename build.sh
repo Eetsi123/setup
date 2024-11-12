@@ -1,8 +1,7 @@
 #!/bin/sh
 set -e
 
-touch -d "$(rg -oP 'Date: \K.*' patches/gnome-shell/2230-multiseat.patch | tail -n1)" \
-                                patches/gnome-shell/2230-multiseat.patch
+find $(dirname $0)/patches -exec touch -d2025-01-01 {} +
 
 podman build --target=base   -t ghcr.io/eetsi123/silverblue:latest "$@" .
 podman build --target=base   -t ghcr.io/eetsi123/silverblue:base   "$@" .

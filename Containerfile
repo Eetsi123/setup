@@ -42,6 +42,11 @@ RUN dnf remove  -y ffmpeg-free libav{codec,format,filter,device,util}-free libsw
                    mangohud vulkan-tools freerdp                              && \
     echo NoDisplay=true | tee -a /usr/share/applications/{nvim,htop}.desktop >/dev/null
 
+RUN --mount=type=bind,src=patches,dst=patches,relabel=shared \
+    ./patches/patch-n-build                               && \
+    dnf install -y *.rpm                                  && \
+    rm             *.rpm
+
 RUN curl -sL https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip | bsdtar xC /usr/bin --strip-components=1 && \
     chmod 755 /usr/bin/bun
 

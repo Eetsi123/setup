@@ -1,0 +1,29 @@
+#!/usr/bin/bash
+set -e
+PATCHES=$(realpath ${0%/*})
+
+for D in $PATCHES/rpm/*
+do
+    NAME=${D##*/}
+
+    mkdir rpmbuild
+    cd    rpmbuild
+    
+    dnf download --srpm $NAME
+    rpm -D "_topdir $PWD" -i $NAME-*.src.rpm
+
+    sed -i "s/%autorelease/999$(rpm -E %dist)/" SPECS/$NAME.spec
+    for PATCH in $PATCHES/rpm/$NAME/*
+    do
+        sed -i "1i Patch: ${PATCH##*/}" SPECS/$NAME.spec
+        cp $PATCH SOURCES/
+    done
+
+    rg -oP "BuildRequires: *\K[^ ]*" SPECS/$NAME.spec | xargs dnf install -y
+    rpmbuild -D "_topdir $PWD" -D "debug_package %nil" -bb SPECS/$NAME.spec
+    dnf history undo last -y
+    
+    mv RPMS/x86_64/$NAME-*.rpm ..
+    cd ..
+    rm -r rpmbuild
+done
