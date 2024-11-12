@@ -1,0 +1,194 @@
+From 935e0123f9182c387144979b6b1434bbe97d6a67 Mon Sep 17 00:00:00 2001
+From: msizanoen1 <msizanoen@qtmlabs.xyz>
+Date: Mon, 7 Mar 2022 15:52:23 +0700
+Subject: [PATCH 1/2] gdm: Do not run session start fade out effect when not on
+ a VT-capable seat
+
+On a non-VT-capable seat, logind will automatically activate the login
+session on creation. On a gnome-shell Wayland session, this causes
+animation effects to be stalled indefinitely, causing hang during login
+as the animation completion callback is never invoked to launch the
+session.
+
+Fix this by checking for current seat's CanTTY property and do not run
+session start effect if the current seat is not VT-capable.
+---
+ .../org.freedesktop.login1.Seat.xml           |  5 +++++
+ .../org.freedesktop.login1.Session.xml        |  1 +
+ .../gnome-shell-dbus-interfaces.gresource.xml |  1 +
+ js/gdm/loginDialog.js                         |  6 +++--
+ js/misc/loginManager.js                       | 22 +++++++++++++++++++
+ 5 files changed, 33 insertions(+), 2 deletions(-)
+ create mode 100644 data/dbus-interfaces/org.freedesktop.login1.Seat.xml
+
+diff --git a/data/dbus-interfaces/org.freedesktop.login1.Seat.xml b/data/dbus-interfaces/org.freedesktop.login1.Seat.xml
+new file mode 100644
+index 00000000000..06c08263ebf
+--- /dev/null
++++ b/data/dbus-interfaces/org.freedesktop.login1.Seat.xml
+@@ -0,0 +1,5 @@
++<node>
++  <interface name="org.freedesktop.login1.Seat">
++    <property name="CanTTY" type="b" access="read"/>
++  </interface>
++</node>
+diff --git a/data/dbus-interfaces/org.freedesktop.login1.Session.xml b/data/dbus-interfaces/org.freedesktop.login1.Session.xml
+index 6fab81794a9..9a86d8c04cc 100644
+--- a/data/dbus-interfaces/org.freedesktop.login1.Session.xml
++++ b/data/dbus-interfaces/org.freedesktop.login1.Session.xml
+@@ -8,6 +8,7 @@
+     <property name="Remote" type="b" access="read"/>
+     <property name="State" type="s" access="read"/>
+     <property name="Type" type="s" access="read"/>
++    <property name="Seat" type="(so)" access="read"/>
+     <method name="SetLockedHint">
+       <arg type="b" direction="in"/>
+     </method>
+diff --git a/data/gnome-shell-dbus-interfaces.gresource.xml b/data/gnome-shell-dbus-interfaces.gresource.xml
+index c3954ba397f..1faddebb812 100644
+--- a/data/gnome-shell-dbus-interfaces.gresource.xml
++++ b/data/gnome-shell-dbus-interfaces.gresource.xml
+@@ -16,6 +16,7 @@
+     <file preprocess="xml-stripblanks">org.freedesktop.impl.portal.PermissionStore.xml</file>
+     <file preprocess="xml-stripblanks">org.freedesktop.impl.portal.Request.xml</file>
+     <file preprocess="xml-stripblanks">org.freedesktop.login1.Manager.xml</file>
++    <file preprocess="xml-stripblanks">org.freedesktop.login1.Seat.xml</file>
+     <file preprocess="xml-stripblanks">org.freedesktop.login1.Session.xml</file>
+     <file preprocess="xml-stripblanks">org.freedesktop.login1.User.xml</file>
+     <file preprocess="xml-stripblanks">org.freedesktop.ModemManager1.Modem.Modem3gpp.xml</file>
+diff --git a/js/gdm/loginDialog.js b/js/gdm/loginDialog.js
+index 4f51a6f41ae..d6c60b0f55c 100644
+--- a/js/gdm/loginDialog.js
++++ b/js/gdm/loginDialog.js
+@@ -1125,11 +1125,13 @@ export const LoginDialog = GObject.registerClass({
+         conflictingSessionDialog.open();
+     }
+ 
+-    _startSession(serviceName) {
++    async _startSession(serviceName) {
++        const seat = await LoginManager.getLoginManager().getCurrentSeatProxy();
++
+         this._bindOpacity();
+         this.ease({
+             opacity: 0,
+-            duration: _FADE_ANIMATION_TIME,
++            duration: seat.CanTTY ? _FADE_ANIMATION_TIME : 0,
+             mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+             onComplete: () => {
+                 this._greeter.call_start_session_when_ready_sync(serviceName, true, null);
+diff --git a/js/misc/loginManager.js b/js/misc/loginManager.js
+index fe3719244ea..e67068dd8d1 100644
+--- a/js/misc/loginManager.js
++++ b/js/misc/loginManager.js
+@@ -7,10 +7,12 @@ import * as Signals from './signals.js';
+ import {loadInterfaceXML} from './fileUtils.js';
+ 
+ const SystemdLoginManagerIface = loadInterfaceXML('org.freedesktop.login1.Manager');
++const SystemdLoginSeatIface = loadInterfaceXML('org.freedesktop.login1.Seat');
+ const SystemdLoginSessionIface = loadInterfaceXML('org.freedesktop.login1.Session');
+ const SystemdLoginUserIface = loadInterfaceXML('org.freedesktop.login1.User');
+ 
+ const SystemdLoginManager = Gio.DBusProxy.makeProxyWrapper(SystemdLoginManagerIface);
++const SystemdLoginSeat = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSeatIface);
+ const SystemdLoginSession = Gio.DBusProxy.makeProxyWrapper(SystemdLoginSessionIface);
+ const SystemdLoginUser = Gio.DBusProxy.makeProxyWrapper(SystemdLoginUserIface);
+ 
+@@ -105,6 +107,22 @@ class LoginManagerSystemd extends Signals.EventEmitter {
+             this._sessionRemoved.bind(this));
+     }
+ 
++    async getCurrentSeatProxy() {
++        if (this._currentSeat)
++            return this._currentSeat;
++
++        try {
++            let session = await this.getCurrentSessionProxy();
++            const [seatName_, objectPath] = session.Seat;
++            this._currentSeat = new SystemdLoginSeat(Gio.DBus.system,
++                'org.freedesktop.login1', objectPath);
++            return this._currentSeat;
++        } catch (error) {
++            logError(error, 'Could not get a proxy for the current session');
++            return null;
++        }
++    }
++
+     async getCurrentSessionProxy() {
+         if (this._currentSession)
+             return this._currentSession;
+@@ -226,6 +244,10 @@ class LoginManagerDummy extends Signals.EventEmitter  {
+         return new Promise(() => {});
+     }
+ 
++    getCurrentSeatProxy() {
++        return new Promise(resolve => resolve(null));
++    }
++
+     canSuspend() {
+         return new Promise(resolve => resolve({
+             canSuspend: false,
+-- 
+GitLab
+
+
+From 65109da70b67cbbd1fd26e049f940f1dca2215aa Mon Sep 17 00:00:00 2001
+From: msizanoen1 <msizanoen@qtmlabs.xyz>
+Date: Mon, 7 Mar 2022 17:00:35 +0700
+Subject: [PATCH 2/2] LoginManager: Use logind auto heuristic when
+ XDG_SESSION_ID is not set
+
+On a multiseat system, the current session determination method will
+cause the wrong session to be detected in the GDM greeter. Fix this by
+letting logind figure out the session instead. logind will use the
+session ID acquired from gnome-shell's cgroup information then
+automatically fall back to using the user display session.
+---
+ js/misc/loginManager.js | 32 +++++++++-----------------------
+ 1 file changed, 9 insertions(+), 23 deletions(-)
+
+diff --git a/js/misc/loginManager.js b/js/misc/loginManager.js
+index e67068dd8d1..059fd728165 100644
+--- a/js/misc/loginManager.js
++++ b/js/misc/loginManager.js
+@@ -130,29 +130,15 @@ class LoginManagerSystemd extends Signals.EventEmitter {
+         let sessionId = GLib.getenv('XDG_SESSION_ID');
+         if (!sessionId) {
+             log('Unset XDG_SESSION_ID, getCurrentSessionProxy() called outside a user session. Asking logind directly.');
+-            let [session, objectPath] = this._userProxy.Display;
+-            if (session) {
+-                log(`Will monitor session ${session}`);
+-                sessionId = session;
+-            } else {
+-                log('Failed to find "Display" session; are we the greeter?');
+-
+-                for ([session, objectPath] of this._userProxy.Sessions) {
+-                    let sessionProxy = new SystemdLoginSession(Gio.DBus.system,
+-                        'org.freedesktop.login1',
+-                        objectPath);
+-                    log(`Considering ${session}, class=${sessionProxy.Class}`);
+-                    if (sessionProxy.Class === 'greeter') {
+-                        log(`Yes, will monitor session ${session}`);
+-                        sessionId = session;
+-                        break;
+-                    }
+-                }
+-
+-                if (!sessionId) {
+-                    log('No, failed to get session from logind.');
+-                    return null;
+-                }
++            try {
++                let session = new SystemdLoginSession(Gio.DBus.system,
++                    'org.freedesktop.login1',
++                    '/org/freedesktop/login1/session/auto');
++                log(`Will monitor session ${session.Id}`);
++                sessionId = session.Id;
++            } catch (error) {
++                logError(error, 'Failed to get session from logind');
++                return null;
+             }
+         }
+ 
+-- 
+GitLab
+

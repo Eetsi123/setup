@@ -32,7 +32,18 @@ RUN rpm-ostree install https://github.com/winterheart/broadcom-bt-firmware/relea
 
 
 ### NOTE: userland ###
-<<<<<<< HEAD
+RUN --mount=type=bind,src=patches/gnome-shell/2230-multiseat.patch,dst=ms,relabel=shared    \
+    mkdir rpmbuild && cd rpmbuild                                                        && \
+    V=$(rpm -q --qf %{version} gnome-shell) R=$(rpm -q --qf %{release} gnome-shell) P=100.fc41            && \
+    curl -sLO https://kojipkgs.fedoraproject.org/packages/gnome-shell/$V/$R/src/gnome-shell-$V-$R.src.rpm && \
+    rpm -D "_topdir $PWD" -i gnome-shell-*.src.rpm && rpm -qa --qf "%{name}\n" >before   && \
+    grep -oP "BuildRequires: +\K[^ ]+" SPECS/gnome-shell.spec | xargs rpm-ostree install && \
+    sed -i "s/%autorelease/$P\nPatch: ms/" SPECS/gnome-shell.spec && cp ../ms SOURCES/   && \
+    rpmbuild -D "_topdir $PWD" -bb SPECS/gnome-shell.spec                                && \
+    rpm -qa --qf "%{name}\n" | grep -vFxf before | xargs rpm-ostree uninstall            && \
+    rpm-ostree override replace RPMS/x86_64/gnome-shell-$V-$P.x86_64.rpm                 && \
+    cd .. && rm -r rpmbuild
+
 RUN rpm-ostree uninstall ffmpeg-free libav{codec,format,filter,device,util}-free libsw{scale,resample}-free libpostproc-free && \
     rpm-ostree install langpacks-fi                                      \
                        htop iotop-c nethogs nmap smartmontools sg3_utils \
