@@ -54,7 +54,10 @@ RUN rpm-ostree uninstall ffmpeg-free libav{codec,format,filter,device,util}-free
                        msmtp golang-github-acme-lego                     \
                        mangohud vulkan-tools freerdp                  && \
     curl -sL https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip | bsdtar xC /usr/bin --strip-components=1 && \
-    chmod 755 /usr/bin/bun
+    chmod 755 /usr/bin/bun                                                                                                       && \
+    curl -sL https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-rpm-41.zip | bsdtar x    && \
+    rpm-ostree install umu-launcher-*.rpm                                                                                        && \
+    rm                 umu-launcher-*.rpm
 
 RUN CARGO_HOME=/tmp/cargo cargo install --no-track --root=/usr dufs tokei fclones binwalk && \
     rm -r /tmp/cargo
