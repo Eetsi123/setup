@@ -39,8 +39,9 @@ RUN dnf remove  -y ffmpeg-free libav{codec,format,filter,device,util}-free libsw
                    ffmpeg mediainfo                                              \
                    cargo fontconfig-devel pipx uv python3-devel cmake meson perf \
                    wireguard-tools msmtp golang-github-acme-lego                 \
-                   mangohud vulkan-tools freerdp                              && \
+                   gamescope mangohud vulkan-tools freerdp                    && \
     echo NoDisplay=true | tee -a /usr/share/applications/{nvim,htop}.desktop >/dev/null
+RUN dnf install -y https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-1.2.5.fc41.rpm
 
 RUN --mount=type=bind,src=patches,dst=patches,relabel=shared \
     ./patches/patch-n-build                               && \
