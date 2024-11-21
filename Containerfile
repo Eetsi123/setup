@@ -68,7 +68,10 @@ RUN rpm-ostree uninstall ffmpeg-free libav{codec,format,filter,device,util}-free
                        ffmpeg mediainfo                                  \
                        cargo fontconfig-devel pipx python3-devel         \
                        msmtp golang-github-acme-lego                     \
-                       mangohud vulkan-tools freerdp
+                       mangohud vulkan-tools freerdp                  && \
+    curl -sL https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-rpm-40.zip | bsdtar x && \
+    rpm-ostree install umu-launcher-*.noarch.rpm                                                                              && \
+    rm                 umu-launcher-*.noarch.rpm
 
 RUN CARGO_HOME=/tmp/cargo cargo install --no-track --root=/usr dufs tokei fclones binwalk && \
     rm -r /tmp/cargo
