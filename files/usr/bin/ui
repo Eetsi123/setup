@@ -1,0 +1,91 @@
+#!/usr/bin/bash
+set -e
+u=${u:-/opt/umu}
+
+### NOTE: configure system ###
+[[ -d $u ]] || sudo mkdir -p          "$u"
+[[ -w $u ]] || sudo chown $USER:$USER "$u"
+
+if ! [[ -L /usr/local/share/applications/umu ]]
+then
+    sudo mkdir -p                    /usr/local/share/applications
+    sudo ln    -s "$u"/.applications /usr/local/share/applications/umu
+fi
+
+if [[ $# -eq 0 ]]
+then
+    exit
+fi
+
+
+### NOTE: configure install-prefix ###
+export GAMEID=0 WINEPREFIX="$u"/.install-prefix
+
+mkdir -p   "$u/$1" "$WINEPREFIX"/dosdevices
+ln    -sfT "$u/$1" "$WINEPREFIX"/dosdevices/d:
+
+if [[ $# -eq 2 ]]
+then
+    umu-run "$2"
+fi
+
+
+### NOTE: create desktop entry ###
+sel() {
+    readarray -t O < $1
+
+    if [[ ${#O[@]} -eq 1 ]]
+    then
+        echo "$O"
+    else
+        select o in "${O[@]}"
+        do
+            echo "$o"
+            break
+        done
+    fi
+}
+mkdir -p "$u"/.applications
+
+if ! [[ -L $u/$1/exe ]]
+then
+    LNK=$(sel <(find $WINEPREFIX/drive_c/users/{Public,steamuser}/Desktop -type f))
+    EXE=$(sel <(strings "$LNK" | rg -o "D:.*exe"))
+
+    if [[ -n $EXE ]]
+    then
+        EXE=$(umu-run winepath -u "$EXE")
+    else
+        read -p "exe: " EXE
+    fi
+
+    ln -sr "$EXE" "$u/$1/exe"
+fi
+
+if ! [[ -f $u/$1/icon ]] && 7z l "$u/$1/exe" &>/dev/null
+then
+    I=$(7z -ba l "$u/$1/exe" | rg -o '[0-9]+  .rsrc/ICON/.+$' | sort -nr | rg -om1 '[^ ]+$')
+        7z -ba e "$u/$1/exe" -o"$u/$1" "$I"
+    mv "$u/$1/${I##*/}" "$u/$1/icon"
+fi
+
+if ! [[ -f $u/$1/icon ]]
+then
+    N=$(wrestool --type=icon "$u/$1/exe" | rg -oPr '$1 $2' -- "--name=([0-9]+).*size=([0-9]+)" | sort -k2nr | head -n1 | cut -d' ' -f1)
+        wrestool --type=icon "$u/$1/exe" --name=$N -xR >"$u/$1/icon"
+fi
+
+if [[ $(file -b --mime-type "$u/$1/icon") = image/vnd.microsoft.icon ]]
+then
+    magick {ico,png}:"$u/$1/icon"
+fi
+
+
+cat <<EOF >"$u/.applications/$1".desktop
+[Desktop Entry]
+Type=Application
+Name=$1
+Categories=Game
+Exec=ur "$1"
+Icon=$u/$1/icon
+EOF
