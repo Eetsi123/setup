@@ -1,0 +1,45 @@
+#!/usr/bin/bash
+set -e
+u=${u:-/opt/umu}
+
+
+### NOTE: common ###
+[[ -f $1 ]] && e=$1 || e=$u/$1/exe; shift
+p=$(readlink -f "$e"); p=${p%/*}
+o=()
+
+export GAMEID=.
+
+rg -q winebus ~/Games/umu/system.reg \
+    || umu-run reg add 'HKLM\System\CurrentControlSet\Services\winebus' /v DisableHidraw /t REG_DWORD /d 1
+
+
+### NOTE: optional ###
+command -v nvlimit-run >/dev/null && o+=( nvlimit-run )
+
+if [[ $1 = --sbs ]]
+then
+    shift
+
+    rg -q reshade ~/Games/umu/system.reg \
+        || umu-run reg add 'HKLM\Software\Khronos\Vulkan\ImplicitLayers' /v "$(umu-run winepath -w "$u"/.reshade/ReShade64.json)" /t REG_DWORD /d 0
+
+    ln -sf "$u"/.reshade/vulkan-1.dll       "$p"/vulkan-1.dll
+    ln -sf "$u"/.reshade/d3dcompiler_47.dll "$p"/d3dcompiler_47.dll
+    ln -sf "$u"/.reshade/ReShade64.dll      "$p"/dxgi.dll
+    cp     "$u"/.reshade/ReShade*.ini       "$p"/
+
+    export WINEDLLOVERRIDES="vulkan-1,d3dcompiler_47,dxgi=n" XCURSOR_THEME=invisible
+    o+=( gamescope -w 3840 -h 2160 --scaler stretch --fullscreen -- )
+else
+    rm -f "$p"/{vulkan-1,d3dcompiler_47,dxgi}.dll
+
+    o+=( mangohud )
+fi
+
+
+### NOTE: exec ###
+exec                      \
+    gnome-session-inhibit \
+    "${o[@]}"             \
+    umu-run "$e" "$@"
