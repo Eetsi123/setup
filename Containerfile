@@ -66,7 +66,10 @@ RUN rpm-ostree uninstall ffmpeg-free libav{codec,format,filter,device,util}-free
                        tmux nnn rclone neovim ripgrep pwgen aria2 golang-github-acme-lego msmtp        \
                        unrar p7zip-plugins bsdtar                                                      \
                        ffmpeg mediainfo                                                                \
-                       cargo pipx python3-devel
+                       cargo pipx python3-devel                                                     && \
+    curl -sL https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-rpm-40.zip | bsdtar x && \
+    rpm-ostree install umu-launcher-*.noarch.rpm                                                                              && \
+    rm                 umu-launcher-*.noarch.rpm
 
 RUN --mount=type=bind,src=files/etc/profile.d/pipx.sh,dst=/p source /p && \
     pipx install --global pulsemixer liquidctl yt-dlp ocrmypdf pgsrip && \
