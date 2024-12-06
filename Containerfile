@@ -71,6 +71,9 @@ RUN rpm-ostree uninstall ffmpeg-free libav{codec,format,filter,device,util}-free
     rpm-ostree install umu-launcher-*.noarch.rpm                                                                              && \
     rm                 umu-launcher-*.noarch.rpm
 
+RUN CARGO_HOME=/tmp/cargo cargo install --no-track --root=/usr dufs tokei fclones && \
+    rm -r /tmp/cargo
+
 RUN --mount=type=bind,src=files/etc/profile.d/pipx.sh,dst=/p source /p && \
     pipx install --global pulsemixer liquidctl yt-dlp ocrmypdf pgsrip && \
     pipx inject  --global yt-dlp secretstorage
