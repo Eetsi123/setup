@@ -61,12 +61,16 @@ RUN --mount=type=bind,src=patches/gnome-shell/2230-multiseat.patch,dst=ms \
     cd .. && rm -r rpmbuild
 
 RUN rpm-ostree uninstall ffmpeg-free libav{codec,format,filter,device,util}-free libsw{scale,resample}-free libpostproc-free && \
-    rpm-ostree install langpacks-fi                                                                    \
-                       htop iotop-c nethogs nmap smartmontools sg3_utils mangohud vulkan-tools freerdp \
-                       tmux nnn rclone neovim ripgrep pwgen aria2 golang-github-acme-lego msmtp        \
-                       unrar p7zip-plugins bsdtar                                                      \
-                       ffmpeg mediainfo                                                                \
-                       cargo pipx python3-devel                                                     && \
+    rpm-ostree install langpacks-fi cockpit cockpit-machines             \
+                                                                         \
+                       htop iotop-c nethogs nmap smartmontools sg3_utils \
+                       tmux nnn rclone neovim ripgrep pwgen aria2        \
+                       unrar p7zip-plugins bsdtar                        \
+                       ffmpeg mediainfo                                  \
+                       cargo pipx python3-devel                          \
+                                                                         \
+                       msmtp golang-github-acme-lego                     \
+                       mangohud vulkan-tools freerdp                  && \
     curl -sL https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-rpm-40.zip | bsdtar x && \
     rpm-ostree install umu-launcher-*.noarch.rpm                                                                              && \
     rm                 umu-launcher-*.noarch.rpm
