@@ -42,7 +42,7 @@ RUN --mount=type=bind,src=patches/gnome-shell/2230-multiseat.patch,dst=ms,relabe
 RUN dnf remove  -y ffmpeg-free libav{codec,format,filter,device,util}-free libsw{scale,resample}-free libpostproc-free && \
     dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-41.noarch.rpm          \
                    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-41.noarch.rpm && \
-    dnf install -y langpacks-fi gnome-tweaks                             \
+    dnf install -y langpacks-fi gnome-tweaks cockpit{,-machines}         \
                    {h,b}top iotop-c nethogs nmap smartmontools sg3_utils \
                    tmux nnn rclone neovim ripgrep fzf pwgen aria2        \
                    unrar p7zip-plugins bsdtar icoutils                   \
