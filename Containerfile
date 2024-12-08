@@ -45,7 +45,7 @@ RUN --mount=type=bind,src=patches/gnome-shell/2230-multiseat.patch,dst=ms,relabe
     cd .. && rm -r rpmbuild
 
 RUN rpm-ostree uninstall ffmpeg-free libav{codec,format,filter,device,util}-free libsw{scale,resample}-free libpostproc-free && \
-    rpm-ostree install langpacks-fi                                      \
+    rpm-ostree install langpacks-fi cockpit cockpit-machines             \
                        htop iotop-c nethogs nmap smartmontools sg3_utils \
                        tmux nnn rclone neovim ripgrep fzf pwgen aria2    \
                        unrar p7zip-plugins bsdtar icoutils               \
