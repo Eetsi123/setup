@@ -42,14 +42,14 @@ RUN --mount=type=bind,src=patches/gnome-shell/2230-multiseat.patch,dst=ms,relabe
 RUN dnf remove  -y ffmpeg-free libav{codec,format,filter,device,util}-free libsw{scale,resample}-free libpostproc-free && \
     dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-41.noarch.rpm          \
                    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-41.noarch.rpm && \
-    dnf install -y langpacks-fi gnome-tweaks                             \
-                   {h,b}top iotop-c nethogs nmap smartmontools sg3_utils \
-                   tmux nnn rclone neovim ripgrep fzf pwgen aria2        \
-                   unrar p7zip-plugins bsdtar icoutils                   \
-                   ffmpeg mediainfo                                      \
-                   cargo fontconfig-devel pipx python3-devel             \
-                   wireguard-tools msmtp golang-github-acme-lego         \
-                   mangohud vulkan-tools freerdp                      && \
+    dnf install -y langpacks-fi gnome-tweaks cockpit{,-machines} libvirt-daemon \
+                   {h,b}top iotop-c nethogs nmap smartmontools sg3_utils        \
+                   tmux nnn rclone neovim ripgrep fzf pwgen aria2               \
+                   unrar p7zip-plugins bsdtar icoutils                          \
+                   ffmpeg mediainfo                                             \
+                   cargo fontconfig-devel pipx python3-devel                    \
+                   wireguard-tools msmtp golang-github-acme-lego                \
+                   mangohud vulkan-tools freerdp                             && \
     echo NoDisplay=true | tee -a /usr/share/applications/{nvim,htop}.desktop >/dev/null
 
 RUN curl -sL https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip | bsdtar xC /usr/bin --strip-components=1 && \
