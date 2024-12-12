@@ -25,7 +25,7 @@ RUN curl -sLO --output-dir /etc/yum.repos.d https://nvidia.github.io/libnvidia-c
     rpm-ostree install kmod-nvidia-*.x86_64.rpm nvidia-container-toolkit nvtop                                                    && \
     rm                 kmod-nvidia-*.x86_64.rpm
 
-ARG ZFS_VERSION=2.2.6
+ARG ZFS_VERSION=2.2.7
 RUN curl -sL https://github.com/openzfs/zfs/releases/download/zfs-$ZFS_VERSION/zfs-$ZFS_VERSION.tar.gz | tar xz          && \
     rpm-ostree install   libtool ncompress {python3,systemd}-devel lib{aio,attr,blkid,curl,ffi,tirpc,uuid}-devel         && \
     cd zfs-$ZFS_VERSION                                                                                                  && \
