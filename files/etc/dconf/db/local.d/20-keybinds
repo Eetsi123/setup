@@ -6,7 +6,7 @@ custom-keybindings=['/org/gnome/settings-daemon/plugins/media-keys/custom-keybin
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/terminal]
 binding='<Super>Return'
-command='gnome-terminal'
+command='ptyxis --new-window'
 name='Open terminal'
 
 [org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/mangohud]

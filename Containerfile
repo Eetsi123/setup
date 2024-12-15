@@ -1,24 +1,14 @@
 ### NOTE: base ###
-FROM quay.io/fedora/fedora-silverblue:40
+FROM quay.io/fedora/fedora-silverblue:41
 RUN rpm-ostree override remove gnome-software{,-rpm-ostree} firefox{,-langpacks} yelp
-RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-40.noarch.rpm \
-                       https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-40.noarch.rpm
+RUN rpm-ostree install https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-41.noarch.rpm \
+                       https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-41.noarch.rpm
 WORKDIR /tmp
 
 
 ### NOTE: kernel ###
-RUN --mount=type=bind,src=files/etc/dracut.conf.d/nvidia.conf,dst=/etc/dracut.conf.d/nvidia.conf \
-    rpm-ostree override replace \
-        https://kojipkgs.fedoraproject.org/packages/kernel/6.10.3/200.fc40/x86_64/kernel-6.10.3-200.fc40.x86_64.rpm               \
-        https://kojipkgs.fedoraproject.org/packages/kernel/6.10.3/200.fc40/x86_64/kernel-core-6.10.3-200.fc40.x86_64.rpm          \
-        https://kojipkgs.fedoraproject.org/packages/kernel/6.10.3/200.fc40/x86_64/kernel-modules-6.10.3-200.fc40.x86_64.rpm       \
-        https://kojipkgs.fedoraproject.org/packages/kernel/6.10.3/200.fc40/x86_64/kernel-modules-core-6.10.3-200.fc40.x86_64.rpm  \
-        https://kojipkgs.fedoraproject.org/packages/kernel/6.10.3/200.fc40/x86_64/kernel-modules-extra-6.10.3-200.fc40.x86_64.rpm \
-        https://kojipkgs.fedoraproject.org/packages/kernel/6.10.3/200.fc40/x86_64/kernel-devel-6.10.3-200.fc40.x86_64.rpm         \
-        https://kojipkgs.fedoraproject.org/packages/kernel/6.10.3/200.fc40/x86_64/kernel-devel-matched-6.10.3-200.fc40.x86_64.rpm \
-        https://kojipkgs.fedoraproject.org/packages/kernel-headers/6.10.3/200.fc40/x86_64/kernel-headers-6.10.3-200.fc40.x86_64.rpm
-RUN rpm -q --qf '%{version}-%{release}.%{arch}' kernel >/usr/kernel && \
-    test -f /usr/bin/ld || ln -s ld.bfd /usr/bin/ld
+#FIXME: add "module_blacklist=nouveau preempt=full" to cmdline
+RUN rpm -q --qf '%{version}-%{release}.%{arch}' kernel >/usr/kernel
 
 RUN curl -sLO --output-dir /etc/yum.repos.d https://nvidia.github.io/libnvidia-container/stable/rpm/nvidia-container-toolkit.repo && \
     rpm-ostree install kmod-nvidia && runuser -u akmods -- akmodsbuild -k $(cat /usr/kernel) /usr/src/akmods/nvidia-kmod.latest   && \
@@ -48,7 +38,7 @@ RUN rpm-ostree install https://github.com/winterheart/broadcom-bt-firmware/relea
 ### NOTE: userland ###
 RUN --mount=type=bind,src=patches/gnome-shell/2230-multiseat.patch,dst=ms \
     mkdir rpmbuild && cd rpmbuild                                      && \
-    V=$(rpm -q --qf %{version} gnome-shell) R=$(rpm -q --qf %{release} gnome-shell) P=100.fc40            && \
+    V=$(rpm -q --qf %{version} gnome-shell) R=$(rpm -q --qf %{release} gnome-shell) P=100.fc41            && \
     curl -sLO https://kojipkgs.fedoraproject.org/packages/gnome-shell/$V/$R/src/gnome-shell-$V-$R.src.rpm && \
     rpm -D "_topdir $PWD" -i gnome-shell-*.src.rpm && rpm -qa --qf "%{name}\n" >before   && \
     grep -oP "BuildRequires: +\K[^ ]+" SPECS/gnome-shell.spec | xargs rpm-ostree install && \
@@ -67,7 +57,7 @@ RUN rpm-ostree uninstall ffmpeg-free libav{codec,format,filter,device,util}-free
                        cargo fontconfig-devel pipx python3-devel         \
                        msmtp golang-github-acme-lego                     \
                        mangohud vulkan-tools freerdp                  && \
-    curl -sL https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-rpm-40.zip | bsdtar x && \
+    curl -sL https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-rpm-41.zip | bsdtar x && \
     rpm-ostree install umu-launcher-*.noarch.rpm                                                                              && \
     rm                 umu-launcher-*.noarch.rpm
 
@@ -79,7 +69,7 @@ RUN export PIPX_GLOBAL_HOME=/usr/lib/pipx PIPX_GLOBAL_BIN_DIR=/usr/bin PIPX_MAN_
     pipx inject  --global yt-dlp secretstorage
 
 RUN curl -sLOO -o date-menu-formatter@marcinjakubowski.github.com.github.zip -o lan-ip-address@mrhuber.com.github.zip                                 \
-        https://github.com/Leleat/Tiling-Assistant/releases/download/v48/tiling-assistant@leleat-on-github.shell-extension.zip                        \
+        https://github.com/Leleat/Tiling-Assistant/releases/latest/download/tiling-assistant@leleat-on-github.shell-extension.zip                     \
         https://github.com/stuarthayhurst/alphabetical-grid-extension/releases/latest/download/AlphabeticalAppGrid@stuarthayhurst.shell-extension.zip \
         https://github.com/marcinjakubowski/date-menu-formatter/archive/master.zip                                                                    \
         https://github.com/Josholith/gnome-extension-lan-ip-address/archive/master.zip                                                             && \
