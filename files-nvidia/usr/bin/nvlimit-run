@@ -1,0 +1,4 @@
+#!/usr/bin/bash
+sudo nvlimit on
+"$@"
+sudo nvlimit off
