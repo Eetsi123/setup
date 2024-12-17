@@ -94,5 +94,7 @@ RUN --mount=type=bind,src=files-nvidia/etc/nvidia/kernel.conf,dst=/etc/nvidia/ke
     echo NoDisplay=true >>/usr/share/applications/nvtop.desktop                                       && \
     dkms autoinstall -k $(cat /usr/kernel)
 
+RUN python -m venv /usr/lib/nvidia-venv && /usr/lib/nvidia-venv/bin/pip install nvidia-ml-py
+
 COPY files/ files-nvidia/ /
 RUN dconf update
