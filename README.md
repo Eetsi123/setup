@@ -16,6 +16,7 @@ Highlights
 - chromium
 - libreoffice
 - mpv
+- wrapper for umu-launcher
 
 
 Issues

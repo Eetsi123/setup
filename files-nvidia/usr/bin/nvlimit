@@ -1,0 +1,34 @@
+#!/usr/lib/nvidia-venv/bin/python
+import sys, os, time
+from pynvml import *
+
+nvmlInit()
+idx = int(os.environ.get('nvi', 0))
+dev = nvmlDeviceGetHandleByIndex(idx)
+
+power  = nvmlDeviceGetPowerManagementDefaultLimit(dev)
+offset = 0
+fan    = 0
+fans   = nvmlDeviceGetNumFans(dev)
+
+arg = len(sys.argv) == 2 and sys.argv[1]
+if arg == 'on':
+    if env := os.environ.get('nvp'): power  = int(env) * 1000
+    if env := os.environ.get('nvo'): offset = int(env)
+    if env := os.environ.get('nvf'): fan    = int(env)
+elif arg != 'off':
+    quit(1)
+
+nvmlDeviceSetPowerManagementLimit(dev, power)
+nvmlDeviceSetGpcClkVfOffset(dev, offset)
+
+if fan == 0:
+    for i in range(fans):
+        nvmlDeviceSetFanControlPolicy(dev, i, 0)
+else:
+    for s in range(35, fan, 5):
+        for i in range(fans):
+            nvmlDeviceSetFanSpeed_v2(dev, i, s)
+            time.sleep(0.15)
+    for i in range(fans):
+        nvmlDeviceSetFanSpeed_v2(dev, i, fan)

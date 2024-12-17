@@ -42,9 +42,10 @@ RUN --mount=type=cache,dst=/var/cache/libdnf5 --mount=type=bind,src=fixes/dnf.co
                    ffmpeg compat-ffmpeg4 mediainfo                               \
                    cargo fontconfig-devel pipx uv python3-devel cmake meson perf \
                    wireguard-tools msmtp golang-github-acme-lego                 \
-                   mangohud vulkan-tools igt-gpu-tools freerdp                && \
+                   gamescope mangohud vulkan-tools igt-gpu-tools freerdp      && \
     setcap CAP_PERFMON=ep /usr/bin/intel_gpu_top CAP_PERFMON=ep /usr/bin/btop && \
     echo NoDisplay=true | tee -a /usr/share/applications/{nvim,htop}.desktop >/dev/null
+RUN dnf install -y https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-1.2.6.fc41.rpm
 
 RUN curl -sL https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip | bsdtar xC /usr/bin --strip-components=1 && \
     chmod 755 /usr/bin/bun
@@ -90,6 +91,8 @@ RUN --mount=type=cache,dst=/var/cache/libdnf5 --mount=type=bind,src=fixes/dnf.co
     rm -f /etc/nvidia/kernel.conf.rpmnew                                                                && \
     echo NoDisplay=true >>/usr/share/applications/nvtop.desktop                                         && \
     dkms autoinstall
+
+RUN python -m venv /usr/lib/nvidia-venv && /usr/lib/nvidia-venv/bin/pip install nvidia-ml-py
 
 RUN dnf install -y python3.12                                                            && \
     PIPX_GLOBAL_HOME=/usr/lib/pipx PIPX_GLOBAL_BIN_DIR=/usr/bin PIPX_MAN_DIR=/usr/share/man \
