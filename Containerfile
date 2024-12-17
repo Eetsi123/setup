@@ -95,3 +95,7 @@ RUN rpm-ostree install kmod-nvidia xorg-x11-drv-nvidia-cuda golang-github-nvidia
     rm -r akmods* kmod-nvidia-*.rpm                                                                      && \
     depmod $(cat /usr/kernel)                                                                            && \
     echo "NoDisplay=true" | tee -a /usr/share/applications/{nvidia-settings,nvtop}.desktop >/dev/null
+
+RUN python -m venv /usr/lib/nvidia-venv && /usr/lib/nvidia-venv/bin/pip install nvidia-ml-py
+
+COPY files-nvidia/ /

@@ -64,7 +64,7 @@ cat <<EOF >"$u/.applications/$1".desktop
 Type=Application
 Name=$1
 Categories=Game
-Exec=env GAMEID=. MANGOHUD=1 gnome-session-inhibit umu-run "$u/$1/exe"
+Exec=env GAMEID=. MANGOHUD=1 gnome-session-inhibit $(command -v nvlimit-run >/dev/null && echo "nvlimit-run ")umu-run "$u/$1/exe"
 Icon=$u/$1/icon
 EOF
 # TODO: system.reg -> winebus -> "DisableHidraw"=dword:00000001
