@@ -66,7 +66,8 @@ RUN CARGO_HOME=/tmp/cargo cargo install --no-track --root=/usr dufs tokei fclone
 
 RUN export PIPX_GLOBAL_HOME=/usr/lib/pipx PIPX_GLOBAL_BIN_DIR=/usr/bin PIPX_MAN_DIR=/usr/share/man && \
     pipx install --global pulsemixer liquidctl yt-dlp ocrmypdf pgsrip                              && \
-    pipx inject  --global yt-dlp secretstorage
+    pipx inject  --global yt-dlp secretstorage                                                     && \
+    python -m venv /usr/lib/nvidia-ml-py && /usr/lib/nvidia-ml-py/bin/pip install nvidia-ml-py
 
 RUN curl -sLOO -o date-menu-formatter@marcinjakubowski.github.com.github.zip -o lan-ip-address@mrhuber.com.github.zip                                 \
         https://github.com/Leleat/Tiling-Assistant/releases/latest/download/tiling-assistant@leleat-on-github.shell-extension.zip                     \
