@@ -65,9 +65,6 @@ RUN CARGO_HOME=/tmp/cargo cargo install --no-track --root=/usr dufs tokei fclone
 RUN export PIPX_GLOBAL_HOME=/usr/lib/pipx PIPX_GLOBAL_BIN_DIR=/usr/bin PIPX_MAN_DIR=/usr/share/man && \
     pipx install --global pulsemixer liquidctl yt-dlp[default,secretstorage,curl-cffi] ocrmypdf pgsrip
 
-RUN curl -sL https://github.com/ollama/ollama/releases/latest/download/ollama-linux-amd64.tgz | tar xz --exclude={cuda_v11,rocm,cpu}_avx && \
-    mv bin/ollama /usr/bin/ && mv lib/ollama /usr/lib/ && rm -r bin lib
-
 RUN curl -sLOO -o date-menu-formatter@marcinjakubowski.github.com.github.zip -o lan-ip-address@mrhuber.com.github.zip                                 \
         https://github.com/Leleat/Tiling-Assistant/releases/latest/download/tiling-assistant@leleat-on-github.shell-extension.zip                     \
         https://github.com/stuarthayhurst/alphabetical-grid-extension/releases/latest/download/AlphabeticalAppGrid@stuarthayhurst.shell-extension.zip \
@@ -96,6 +93,15 @@ RUN rpm-ostree install kmod-nvidia xorg-x11-drv-nvidia-cuda golang-github-nvidia
     depmod $(cat /usr/kernel)                                                                            && \
     echo "NoDisplay=true" | tee -a /usr/share/applications/{nvidia-settings,nvtop}.desktop >/dev/null
 
-RUN python -m venv /usr/lib/nvidia-venv && /usr/lib/nvidia-venv/bin/pip install nvidia-ml-py
+RUN python -m venv /usr/lib/nvidia-venv && /usr/lib/nvidia-venv/bin/pip install nvidia-{cuda-runtime,cublas,cudnn}-cu12 && \
+    find /usr/lib/nvidia-venv/lib64/python3*/site-packages/nvidia -name '*.so*' -exec ln -s {} /usr/lib64/ \;
+
+RUN rpm-ostree install python3.12                                                                  && \
+    export PIPX_GLOBAL_HOME=/usr/lib/pipx PIPX_GLOBAL_BIN_DIR=/usr/bin PIPX_MAN_DIR=/usr/share/man && \
+    pipx install --global --python=python3.12 whisper-ctranslate2
+
+RUN curl -sL https://github.com/ollama/ollama/releases/latest/download/ollama-linux-amd64.tgz \
+        | tar xz --exclude={cuda_v11,rocm,cpu}_avx --exclude=libcu*.so*                    && \
+    mv bin/ollama /usr/bin/ && mv lib/ollama /usr/lib/ && rm -r bin lib
 
 COPY files-nvidia/ /
