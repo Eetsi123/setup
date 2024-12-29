@@ -88,10 +88,12 @@ RUN dconf update && echo "NoDisplay=true" | tee -a /usr/share/applications/{nvim
 FROM base AS nvidia
 
 RUN rpm-ostree install kmod-nvidia xorg-x11-drv-nvidia-cuda golang-github-nvidia-container-toolkit nvtop && \
-    runuser -u akmods -- akmodsbuild -k $(cat /usr/kernel) /usr/src/akmods/nvidia-kmod.latest            && \
-    rm -r akmods* kmod-nvidia-*.rpm                                                                      && \
-    depmod $(cat /usr/kernel)                                                                            && \
     echo "NoDisplay=true" | tee -a /usr/share/applications/{nvidia-settings,nvtop}.desktop >/dev/null
+RUN mkdir rpmbuild && cd rpmbuild                                                                           && \
+    rpmbuild -D "_topdir $PWD" --rebuild /usr/src/akmods/nvidia-kmod.latest -D "kernels $(cat /usr/kernel)" && \
+    rpm-ostree install RPMS/x86_64/kmod-nvidia-*.rpm                                                        && \
+    depmod $(cat /usr/kernel)                                                                               && \
+    cd .. && rm -r rpmbuild
 
 RUN python -m venv /usr/lib/nvidia-venv && /usr/lib/nvidia-venv/bin/pip install nvidia-{cuda-runtime,cublas,cudnn}-cu12 && \
     find /usr/lib/nvidia-venv/lib64/python3*/site-packages/nvidia -name '*.so*' -exec ln -s {} /usr/lib64/ \;
