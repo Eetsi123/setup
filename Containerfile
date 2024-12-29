@@ -99,5 +99,12 @@ RUN --mount=type=bind,src=files-nvidia/etc/nvidia/kernel.conf,dst=/etc/nvidia/ke
 
 RUN python -m venv /usr/lib/nvidia-venv && /usr/lib/nvidia-venv/bin/pip install nvidia-ml-py
 
+RUN dnf install -y python3.12 && \
+    pipx install --global --python=python3.12 whisper-ctranslate2
+
+RUN curl -sL https://github.com/ollama/ollama/releases/latest/download/ollama-linux-amd64.tgz \
+        | tar xz --exclude={cuda_v11,rocm,cpu}_avx --exclude=libcu*.so*                    && \
+    mv bin/ollama /usr/bin/ && mv lib/ollama /usr/lib/ && rm -r bin lib
+
 COPY files/ files-nvidia/ /
 RUN dconf update
