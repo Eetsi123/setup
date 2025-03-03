@@ -13,6 +13,10 @@ ARG PIPX_MAN_DIR=/usr/share/man
 
 ### NOTE: kernel ###
 #FIXME: add "module_blacklist=nouveau preempt=full" to cmdline
+RUN rpm-ostree uninstall -y kernel{,-core} kernel-modules{,-core,-extra} virtualbox-guest-additions && \
+    rpm-ostree   install -y kernel{,-modules-extra}-6.12.*                                          && \
+    dnf versionlock add kernel-core
+
 RUN dnf install -y kernel-devel-matched "kernel-headers <= $(rpm -q --qf %{version} kernel)" rpm-build
 
 RUN dnf install -y https://zfsonlinux.org/fedora/zfs-release-2-6$(rpm -E %dist).noarch.rpm && \
