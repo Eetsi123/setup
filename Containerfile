@@ -51,14 +51,14 @@ RUN --mount=type=bind,src=patches/gnome-shell/2230-multiseat.patch,dst=ms,relabe
 RUN dnf remove  -y ffmpeg-free libav{codec,format,filter,device,util}-free libsw{scale,resample}-free libpostproc-free && \
     dnf install -y https://mirrors.rpmfusion.org/free/fedora/rpmfusion-free-release-41.noarch.rpm          \
                    https://mirrors.rpmfusion.org/nonfree/fedora/rpmfusion-nonfree-release-41.noarch.rpm && \
-    dnf install -y langpacks-fi gnome-tweaks cockpit{,-machines}         \
-                   {h,b}top iotop-c nethogs nmap smartmontools sg3_utils \
-                   tmux nnn rclone neovim ripgrep fzf pwgen aria2        \
-                   unrar p7zip-plugins bsdtar icoutils                   \
-                   ffmpeg mediainfo                                      \
-                   cargo fontconfig-devel pipx python3-devel             \
-                   wireguard-tools msmtp golang-github-acme-lego         \
-                   gamescope mangohud vulkan-tools freerdp            && \
+    dnf install -y langpacks-fi gnome-tweaks cockpit{,-machines}            \
+                   {h,b}top iotop-c nethogs nmap smartmontools sg3_utils    \
+                   tmux nnn rclone neovim ripgrep fzf pwgen aria2           \
+                   unrar p7zip-plugins bsdtar icoutils                      \
+                   ffmpeg mediainfo                                         \
+                   cargo fontconfig-devel pipx python3-devel                \
+                   wireguard-tools msmtp golang-github-acme-lego            \
+                   gamescope mangohud vulkan-tools igt-gpu-tools freerdp && \
     echo NoDisplay=true | tee -a /usr/share/applications/{nvim,htop}.desktop >/dev/null
 RUN dnf install -y https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-1.2.5.fc41.rpm
 
@@ -68,13 +68,15 @@ RUN curl -sL https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x
 RUN CARGO_HOME=cargo-home cargo install --no-track --root=/usr dufs tokei fclones binwalk && \
     rm -r cargo-home
 
-RUN pipx install --global pulsemixer liquidctl yt-dlp[default,secretstorage,curl-cffi] ocrmypdf pgsrip
+RUN pipx install --global yt-dlp[default,secretstorage,curl-cffi] ocrmypdf pgsrip \
+                          pulsemixer liquidctl undervolt
 
 RUN curl -sLo /usr/bin/kepubify https://github.com/pgaskin/kepubify/releases/download/v4.0.4/kepubify-linux-64bit
 
-RUN curl -sLOO -o date-menu-formatter@marcinjakubowski.github.com.github.zip -o lan-ip-address@mrhuber.com.github.zip                                 \
+RUN curl -sLOOO -o date-menu-formatter@marcinjakubowski.github.com.github.zip -o lan-ip-address@mrhuber.com.github.zip                                \
         https://github.com/Leleat/Tiling-Assistant/releases/download/v50/tiling-assistant@leleat-on-github.shell-extension.zip                        \
         https://github.com/stuarthayhurst/alphabetical-grid-extension/releases/latest/download/AlphabeticalAppGrid@stuarthayhurst.shell-extension.zip \
+        https://github.com/mzur/gnome-shell-batime/releases/latest/download/batime@martin.zurowietz.de.zip                                            \
         https://github.com/marcinjakubowski/date-menu-formatter/archive/master.zip                                                                    \
         https://github.com/Josholith/gnome-extension-lan-ip-address/archive/master.zip                                                             && \
     for F in *.shell-extension.zip; do D=/usr/share/gnome-shell/extensions/${F%.shell-extension.zip}; mkdir -p $D && bsdtar xf $F -C $D; done      && \
