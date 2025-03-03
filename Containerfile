@@ -13,6 +13,12 @@ ARG PIPX_MAN_DIR=/usr/share/man
 
 ### NOTE: kernel ###
 #FIXME: add "module_blacklist=nouveau preempt=full" to cmdline
+RUN K=$(rpm -q --qf %{version}-%{release}.%{arch} kernel) && \
+    dnf downgrade -y kernel{,-modules-extra}" < 6.13"     && \
+    dnf remove    -y kernel-core-$K                       && \
+    dnf versionlock add kernel-core                       && \
+    rm -r /usr/lib/modules/$K
+
 RUN dnf install -y kernel-devel-matched "kernel-headers <= $(rpm -q --qf %{version} kernel)" rpm-build
 
 RUN dnf install -y https://zfsonlinux.org/fedora/zfs-release-2-6$(rpm -E %dist).noarch.rpm && \
@@ -23,9 +29,11 @@ RUN curl -sL https://github.com/BoukeHaarsma23/zenergy/archive/master.tar.gz | t
     make -C zenergy-master -j modules{,_install} clean                                && \
     rm   -r zenergy-master
 
-RUN depmod $(rpm -q --qf %{version}-%{release}.%{arch} kernel)
-
 RUN dnf install -y https://github.com/winterheart/broadcom-bt-firmware/releases/latest/download/broadcom-bt-firmware-12.0.1.1105.rpm
+
+RUN K=$(rpm -q --qf %{version}-%{release}.%{arch} kernel) && \
+    depmod $K                                             && \
+    dracut /usr/lib/modules/$K/initramfs.img --add ostree --no-hostonly --reproducible --verbose --force
 
 
 ### NOTE: userland ###
