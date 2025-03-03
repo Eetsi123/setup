@@ -3,6 +3,9 @@ FROM quay.io/fedora/fedora-silverblue:41 AS common
 RUN dnf remove -y gnome-software{,-rpm-ostree} firefox{,-langpacks} yelp
 WORKDIR /tmp
 
+COPY patches/uname .
+ENV PATH=/tmp:$PATH
+
 ARG PIPX_GLOBAL_HOME=/usr/lib/pipx
 ARG PIPX_GLOBAL_BIN_DIR=/usr/bin
 ARG PIPX_MAN_DIR=/usr/share/man
@@ -10,19 +13,17 @@ ARG PIPX_MAN_DIR=/usr/share/man
 
 ### NOTE: kernel ###
 #FIXME: add "module_blacklist=nouveau preempt=full" to cmdline
-RUN dnf install -y kernel-devel-matched rpm-build && \
-    rpm -q --qf '%{version}-%{release}.%{arch}' kernel >/usr/kernel
+RUN dnf install -y kernel-devel-matched "kernel-headers <= $(rpm -q --qf %{version} kernel)" rpm-build
 
 RUN dnf install -y https://zfsonlinux.org/fedora/zfs-release-2-6$(rpm -E %dist).noarch.rpm && \
     dnf install -y zfs                                                                     && \
-    dkms autoinstall -k $(cat /usr/kernel)
+    dkms autoinstall
 
 RUN curl -sL https://github.com/BoukeHaarsma23/zenergy/archive/master.tar.gz | tar xz && \
-    export KDIR=/usr/lib/modules/$(cat /usr/kernel)/build && \
-    make -C zenergy-master -j modules{,_install} clean    && \
+    make -C zenergy-master -j modules{,_install} clean                                && \
     rm   -r zenergy-master
 
-RUN depmod $(cat /usr/kernel)
+RUN depmod $(rpm -q --qf %{version}-%{release}.%{arch} kernel)
 
 RUN dnf install -y https://github.com/winterheart/broadcom-bt-firmware/releases/latest/download/broadcom-bt-firmware-12.0.1.1105.rpm
 
@@ -76,8 +77,10 @@ RUN curl -sLO --output-dir /usr/share/fonts https://github.com/dmlls/whatsapp-em
 
 ### NOTE: base ###
 FROM common AS base
+
+ENV PATH=${PATH#/tmp:}
 COPY files/ /
-RUN dconf update
+RUN rm uname && dconf update
 
 
 ### NOTE: nvidia ###
@@ -93,7 +96,7 @@ RUN --mount=type=bind,src=files-nvidia/etc/nvidia/kernel.conf,dst=/etc/nvidia/ke
                    nvidia-settings golang-github-nvidia-container-toolkit nvtop                       && \
     rm -f /etc/nvidia/kernel.conf.rpmnew                                                              && \
     echo NoDisplay=true >>/usr/share/applications/nvtop.desktop                                       && \
-    dkms autoinstall -k $(cat /usr/kernel)
+    dkms autoinstall
 
 RUN python -m venv /usr/lib/nvidia-venv && /usr/lib/nvidia-venv/bin/pip install nvidia-ml-py
 
@@ -104,5 +107,6 @@ RUN curl -sL https://github.com/ollama/ollama/releases/latest/download/ollama-li
         | tar xz --exclude={cuda_v11,rocm,cpu}_avx --exclude=libcu*.so*                    && \
     mv bin/ollama /usr/bin/ && mv lib/ollama /usr/lib/ && rm -r bin lib
 
+ENV PATH=${PATH#/tmp:}
 COPY files/ files-nvidia/ /
-RUN dconf update
+RUN rm uname && dconf update
