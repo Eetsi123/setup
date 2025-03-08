@@ -46,6 +46,9 @@ RUN dnf remove  -y ffmpeg-free libav{codec,format,filter,device,util}-free libsw
                    gamescope mangohud vulkan-tools igt-gpu-tools freerdp      && \
     setcap CAP_PERFMON=ep /usr/bin/intel_gpu_top                              && \
     echo NoDisplay=true | tee -a /usr/share/applications/{nvim,htop}.desktop >/dev/null
+RUN fix() { cat /etc/$1 >>/usr/lib/$1; cp /dev/null /etc/$1; } && \
+    fix passwd                                                 && \
+    fix group
 RUN dnf install -y https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-1.2.5.fc41.rpm
 
 RUN --mount=type=bind,src=patches,dst=patches,relabel=shared \
