@@ -60,6 +60,9 @@ RUN dnf remove  -y ffmpeg-free libav{codec,format,filter,device,util}-free libsw
                    wireguard-tools msmtp golang-github-acme-lego                \
                    gamescope mangohud vulkan-tools igt-gpu-tools freerdp     && \
     echo NoDisplay=true | tee -a /usr/share/applications/{nvim,htop}.desktop >/dev/null
+RUN fix() { cat /etc/$1 >>/usr/lib/$1 && cp /dev/null /etc/$1; } && \
+    fix passwd                                                   && \
+    fix group
 RUN dnf install -y https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-1.2.5.fc41.rpm
 
 RUN curl -sL https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip | bsdtar xC /usr/bin --strip-components=1 && \
