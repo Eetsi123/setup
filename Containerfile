@@ -45,6 +45,9 @@ RUN --mount=type=cache,dst=/var/cache/libdnf5 --mount=type=bind,src=fixes/dnf.co
                    gamescope mangohud vulkan-tools igt-gpu-tools freerdp      && \
     setcap CAP_PERFMON=ep /usr/bin/intel_gpu_top CAP_PERFMON=ep /usr/bin/btop && \
     echo NoDisplay=true | tee -a /usr/share/applications/{nvim,htop}.desktop >/dev/null
+RUN fix() { cat /etc/$1 >>/usr/lib/$1; cp /dev/null /etc/$1; } && \
+    fix passwd                                                 && \
+    fix group
 RUN dnf install -y https://github.com/Open-Wine-Components/umu-launcher/releases/latest/download/umu-launcher-1.2.6.fc41.rpm
 
 RUN --mount=type=bind,src=patches/rpm,dst=patches,z \
