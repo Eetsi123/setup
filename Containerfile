@@ -55,6 +55,15 @@ RUN --mount=type=bind,src=patches/rpm,dst=patches,z \
     dnf reinstall -y *.rpm                       && \
     rm               *.rpm
 
+RUN dnf install -y {openxr,vulkan-loader,wayland,wayland-protocols,systemd,libdrm,hidapi,libusb1,libv4l,eigen3}-devel glslang && \
+    git clone --recurse-submodules https://gitlab.freedesktop.org/monado/monado.git                                           && \
+    cd monado                                                                                                                 && \
+    cmake  -B       build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr -DBUILD_TESTING=OFF -DXRT_HAVE_XLIB=OFF         \
+                          -DXRT_FEATURE_SERVICE=OFF                                                                           && \
+    cmake --build   build -j                                                                                                  && \
+    cmake --install build                                                                                                     && \
+    cd .. && rm -r monado
+
 RUN curl -sL https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip | bsdtar xC /usr/bin --strip-components=1 && \
     chmod 755 /usr/bin/bun
 

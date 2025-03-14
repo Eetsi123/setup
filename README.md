@@ -17,6 +17,7 @@ Highlights
 - libreoffice
 - mpv
 - wrapper for umu-launcher
+- monado
 
 ### Patches
 - multiseat (gnome-shell)
