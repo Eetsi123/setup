@@ -1,0 +1,64 @@
+diff --git a/src/backends/native/meta-kms-connector.c b/src/backends/native/meta-kms-connector.c
+index cc6cd89..88f8dae 100644
+--- a/src/backends/native/meta-kms-connector.c
++++ b/src/backends/native/meta-kms-connector.c
+@@ -22,6 +22,10 @@
+ #include "backends/native/meta-kms-connector-private.h"
+ 
+ #include <errno.h>
++#include <string.h>
++
++#include <libdisplay-info/edid.h>
++#include <libdisplay-info/info.h>
+ 
+ #include "backends/native/meta-kms-crtc.h"
+ #include "backends/native/meta-kms-device-private.h"
+@@ -168,6 +172,12 @@ gboolean
+ meta_kms_connector_is_for_lease (MetaKmsConnector *connector)
+ {
+   const char *lease_connectors_str;
++  gconstpointer edid_data;
++  gsize edid_size;
++  const struct di_info *di_info;
++  const struct di_edid *di_edid;
++  const struct di_edid_vendor_product *di_vendor_product;
++  char vendor_product[8];
+ 
+   if (!connector->current_state)
+     return FALSE;
+@@ -186,6 +196,35 @@ meta_kms_connector_is_for_lease (MetaKmsConnector *connector)
+         }
+     }
+ 
++  g_bytes_ref (connector->current_state->edid_data);
++  edid_data = g_bytes_get_data (connector->current_state->edid_data, NULL);
++  edid_size = g_bytes_get_size (connector->current_state->edid_data);
++
++  di_info = di_info_parse_edid (edid_data, edid_size);
++  g_bytes_unref (connector->current_state->edid_data);
++
++  di_edid = di_info_get_edid (di_info);
++  di_vendor_product = di_edid_get_vendor_product (di_edid);
++  sprintf (vendor_product, "%.3s%04X", di_vendor_product->manufacturer, di_vendor_product->product);
++
++  if (strcmp (vendor_product, "MRG3132") == 0)
++    {
++      GList *l_mode;
++
++      for (l_mode = connector->current_state->modes; l_mode; l_mode = l_mode->next)
++        {
++          MetaKmsMode *mode;
++          int width, height;
++
++          mode = l_mode->data;
++          width = meta_kms_mode_get_width (mode);
++          height = meta_kms_mode_get_height (mode);
++
++          if (width == 3840 && height == 1080)
++            return TRUE;
++        }
++    }
++
+   return connector->current_state->non_desktop;
+ }
+ 
