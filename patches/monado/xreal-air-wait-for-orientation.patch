@@ -1,0 +1,35 @@
+diff --git a/src/xrt/drivers/xreal_air/xreal_air_hmd.c b/src/xrt/drivers/xreal_air/xreal_air_hmd.c
+index a9e0cde33..317ad6bfd 100644
+--- a/src/xrt/drivers/xreal_air/xreal_air_hmd.c
++++ b/src/xrt/drivers/xreal_air/xreal_air_hmd.c
+@@ -596,6 +596,21 @@ sensor_read_one_packet(struct xreal_air_hmd *hmd)
+ 	return 0;
+ }
+ 
++static bool
++wait_for_orientation(struct xreal_air_hmd *hmd)
++{
++	for (int i = 0; i < 5000; i++) {
++		if (m_relation_history_get_size(hmd->relation_hist) > 0) {
++			return true;
++		}
++
++		os_nanosleep(U_TIME_1MS_IN_NS);
++	}
++
++	XREAL_AIR_ERROR(hmd, "Orientation wasn't received in 5s");
++	return false;
++}
++
+ static int
+ read_one_control_packet(struct xreal_air_hmd *hmd);
+ 
+@@ -1180,7 +1195,7 @@ xreal_air_hmd_create_device(struct os_hid_device *sensor_device,
+ 		goto cleanup;
+ 	}
+ 
+-	if (!control_brightness(hmd) || !control_display_mode(hmd)) {
++	if (!control_brightness(hmd) || !control_display_mode(hmd) || !wait_for_orientation(hmd)) {
+ 		goto cleanup;
+ 	}
+ 
